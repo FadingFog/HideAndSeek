@@ -1,0 +1,16 @@
+name: HideAndSeek
+version: '${project.version}'
+api-version: 1.7.10
+main: me.fadingfog.hideandseek.HideAndSeek
+website: https://github.com/FadingFog/
+authors: [FadingFog]
+commands:
+  hns:
+    description: commands to control this plugin
+    usage: |
+      /<command> item - get the name of item in hand
+    permission: hns
+permissions:
+  hns:
+    description: Allows to use hns commands
+    default: op
