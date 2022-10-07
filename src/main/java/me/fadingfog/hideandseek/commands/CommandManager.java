@@ -13,7 +13,10 @@ public class CommandManager implements CommandExecutor {
 
     public CommandManager() {
         subCommands.add(new GetItemNameCommand());
+        subCommands.add(new LobbyCommand());
+        subCommands.add(new ArenaCommand());
         subCommands.add(new GameCommand());
+        subCommands.add(new SetupCommand());
     }
 
     @Override

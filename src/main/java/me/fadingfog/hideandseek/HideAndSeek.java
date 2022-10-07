@@ -1,38 +1,54 @@
 package me.fadingfog.hideandseek;
 
 import me.fadingfog.hideandseek.commands.CommandManager;
-import net.kyori.adventure.platform.bukkit.BukkitAudiences;
+import me.fadingfog.hideandseek.game.Arena;
+import me.fadingfog.hideandseek.game.Game;
+import me.fadingfog.hideandseek.game.Lobby;
+import me.fadingfog.hideandseek.placeholder.HnsExpansion;
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.checkerframework.checker.nullness.qual.NonNull;
 
 public final class HideAndSeek extends JavaPlugin {
     private static HideAndSeek instance;
-    private BukkitAudiences adventure;
+    private final ConfigStorage configStorage = new ConfigStorage(this);
 
     public static HideAndSeek getInstance() {
         return HideAndSeek.instance;
     }
 
-    public @NonNull BukkitAudiences adventure() {
-        if(this.adventure == null) {
-            throw new IllegalStateException("Tried to access Adventure when the plugin was disabled!");
-        }
-        return this.adventure;
-    }
-
     @Override
     public void onEnable() {
         instance = this;
-        this.adventure = BukkitAudiences.create(this);
+        setupParts();
+
+        getConfig().options().copyDefaults();
+        saveDefaultConfig();
+
+        if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
+            new HnsExpansion(this).register();
+        } else {
+            getLogger().warning("Could not find PlaceholderAPI! This plugin is required.");
+            Bukkit.getPluginManager().disablePlugin(this);
+        }
 
         getCommand("hns").setExecutor(new CommandManager());
     }
 
     @Override
     public void onDisable() {
-        if(this.adventure != null) {
-            this.adventure.close();
-            this.adventure = null;
-        }
+
+    }
+
+    public void setupParts() {
+        configStorage.LOAD_DEFAULT = true;
+        configStorage.setup();
+
+        final Lobby lobby = new Lobby();
+        final Arena arena = new Arena();
+        final Game game = new Game();
+
+        lobby.setup();
+        arena.setup();
+        game.setup();
     }
 }
