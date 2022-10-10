@@ -1,13 +1,17 @@
 package me.fadingfog.hideandseek.commands;
 
-import me.fadingfog.hideandseek.HideAndSeek;
+import me.fadingfog.hideandseek.ConfigStorage;
+import me.fadingfog.hideandseek.game.Arena;
 import me.fadingfog.hideandseek.game.Game;
+import me.fadingfog.hideandseek.game.Lobby;
 import org.bukkit.entity.Player;
 
 public class GameCommand extends SubCommand {
     private String resultMessage;
-    private final HideAndSeek plugin = HideAndSeek.getInstance();
+    private final ConfigStorage config = ConfigStorage.getInstance();
     private final Game game = Game.getInstance();
+    private final Arena arena = Arena.getInstance();
+    private final Lobby lobby = Lobby.getInstance();
 
 
     @Override
@@ -25,6 +29,9 @@ public class GameCommand extends SubCommand {
         if (args.length > 0) {
             switch (args[0].toLowerCase()) {
                 case ("start"):
+                    if (!(arena.getLocation() != null && lobby.getMembers().size() >= config.getMinNumberOfPlayers())) {
+                        break;
+                    }
                     this.game.start();
 
                     break;

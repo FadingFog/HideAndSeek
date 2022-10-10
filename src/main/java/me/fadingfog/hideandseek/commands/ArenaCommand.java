@@ -25,10 +25,15 @@ public class ArenaCommand extends SubCommand {
     public void perform(Player player, String[] args) {
         if (args.length > 0) {
             switch (args[0].toLowerCase()) {
-                case ("create"):
+                case ("set"):
                     Location playerLoc = player.getLocation();
+                    if (args.length > 1 && args[1].toLowerCase().equals("seekers")) {
+                        arena.setSeekersLobbyLocation(playerLoc);
+                        resultMessage = "New seekers lobby location set";
+                    }
                     arena.setLocation(playerLoc);
-                    resultMessage = "Arena location successfully set";
+                    resultMessage = "New arena location set";
+
                     break;
                 default:
                     resultMessage = "Command not found";

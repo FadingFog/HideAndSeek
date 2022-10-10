@@ -6,6 +6,7 @@ import me.fadingfog.hideandseek.game.Game;
 import me.fadingfog.hideandseek.game.Lobby;
 import me.fadingfog.hideandseek.placeholder.HnsExpansion;
 import org.bukkit.Bukkit;
+import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class HideAndSeek extends JavaPlugin {

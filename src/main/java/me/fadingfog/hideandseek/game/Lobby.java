@@ -17,7 +17,7 @@ public class Lobby {
 
     private final String configPath = "lobby-location";
     private Location location = config.getLocation(configPath);
-    private List<Player> members = new ArrayList<>();
+    private final List<Player> members = new ArrayList<>();
 
 
     public static Lobby getInstance() {
@@ -41,7 +41,7 @@ public class Lobby {
         return lobbyState;
     }
 
-    private void setLobbyState(LobbyState lobbyState) {
+    public void setLobbyState(LobbyState lobbyState) {
         this.lobbyState = lobbyState;
     }
 
@@ -56,7 +56,7 @@ public class Lobby {
     public boolean closeLobby() {
         if (this.lobbyState == LobbyState.Open) {
             setLobbyState(LobbyState.Closed);
-            this.members.clear(); // TODO Teleport players to /back or "teleport" argument and check if
+//            this.members.clear(); // TODO Teleport players to /back or "teleport" argument and check if
             return true;
         }
         return false;

@@ -3,10 +3,17 @@ package me.fadingfog.hideandseek.commands;
 import me.fadingfog.hideandseek.HideAndSeek;
 import me.fadingfog.hideandseek.game.Lobby;
 import org.apache.commons.lang.StringUtils;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
-import org.bukkit.entity.Player;
+import org.bukkit.Material;
+import org.bukkit.entity.*;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 
@@ -33,7 +40,6 @@ public class LobbyCommand extends SubCommand {
                 case ("set"):
                     Location playerLoc = player.getLocation();
                     lobby.setLocation(playerLoc);
-
                     resultMessage = "New lobby location set";
 
                     break;
@@ -52,6 +58,11 @@ public class LobbyCommand extends SubCommand {
 
                     break;
                 case ("join"):
+                    PlayerInventory playerInv = player.getInventory();
+                    if (!(isInventoryEmpty(playerInv) && isArmorInventoryEmpty(playerInv))) {
+                        resultMessage = "Sorry, but your inventory is not empty";
+                        break;
+                    }
                     if (lobby.addMember(player)) {
                         resultMessage = "You are joined lobby";
                     } else resultMessage = "Sorry, but lobby is closed or you're already in it";
@@ -68,8 +79,7 @@ public class LobbyCommand extends SubCommand {
                     resultMessage = "Lobby members: " + StringUtils.join(members, ',');
 
                     break;
-                case ("test"): //DEBUG
-                    System.out.println("this.location: " + lobby.getLocation());
+                case ("test"):
 
                     break;
                 default:
@@ -79,4 +89,13 @@ public class LobbyCommand extends SubCommand {
         } else resultMessage = "Command not found";
 
     }
+
+    public boolean isInventoryEmpty(final Inventory inv) {
+        return Arrays.stream(inv.getContents()).noneMatch(Objects::nonNull);
+    }
+
+    public boolean isArmorInventoryEmpty(final PlayerInventory inv) {
+        return Arrays.stream(inv.getArmorContents()).allMatch(item -> item.getType().equals(Material.AIR));
+    }
+
 }

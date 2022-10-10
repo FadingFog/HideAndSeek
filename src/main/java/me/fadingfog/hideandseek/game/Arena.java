@@ -1,5 +1,6 @@
 package me.fadingfog.hideandseek.game;
 
+import me.fadingfog.hideandseek.ConfigStorage;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
@@ -8,8 +9,13 @@ import java.util.List;
 
 public class Arena {
     private static Arena instance;
-    private Location location = null; // TODO get from config by default
-    private List<Player> members = new ArrayList<>();
+    private final ConfigStorage config = ConfigStorage.getInstance();
+
+    private final String configPath = "arena-location";
+    private final String configSeekersPath = "seekers-lobby-location";
+    private Location location = config.getLocation(configPath);
+    private Location seekersLobbyLocation = config.getLocation(configSeekersPath);
+    private final List<GamePlayer> players = new ArrayList<>();
 
     public static Arena getInstance() {
         return instance;
@@ -20,32 +26,32 @@ public class Arena {
     }
 
     public Location getLocation() {
-        return location;
+        return this.location;
     }
 
     public void setLocation(Location location) {
-        this.location = location;
-        // TODO set to config and then reload config
+        config.setLocation(configPath, location);
+        this.location = config.getLocation(configPath);
     }
 
-    public List<Player> getMembers() {
-        return members;
+    public Location getSeekersLobbyLocation() {
+        return this.seekersLobbyLocation;
     }
 
-    public boolean addMember(Player player) {
-        if (!this.members.contains(player)) {
-            this.members.add(player);
-            player.teleport(location);  // TODO: Teleport via Essentials api (to /back support if false in config)
-            return true;
-        }
-        return false;
+    public void setSeekersLobbyLocation(Location location) {
+        config.setLocation(configSeekersPath, location);
+        this.seekersLobbyLocation = config.getLocation(configSeekersPath);
     }
 
-    public boolean removeMember(Player player) {
-        return this.members.remove(player);
+    public List<GamePlayer> getPlayers() {
+        return this.players;
     }
 
-    public void sendArenaMessage(String msg) {
+    public void addPlayer(GamePlayer player) {
+        this.players.add(player);
+    }
+
+    public void sendArenaMessage(String msg, List<Player> members) {
         for (Player player : members) {
             player.sendMessage(msg);
         }

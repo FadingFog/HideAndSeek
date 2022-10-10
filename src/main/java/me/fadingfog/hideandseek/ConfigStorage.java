@@ -8,6 +8,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.Duration;
 import java.util.HashMap;
 
 @SuppressWarnings({"unchecked", "DuplicatedCode"})
@@ -82,7 +83,7 @@ public class ConfigStorage {
         return new Location(world, x, y, z, yaw, pitch);
     }
 
-    public HashMap<String, String> serializeFromLocation(Location location) {
+    private HashMap<String, String> serializeFromLocation(Location location) {
         String world = location.getWorld().getName();
         String xCoord = Integer.toString((int) location.getX());
         String zCoord = Integer.toString((int) location.getZ());
@@ -98,6 +99,40 @@ public class ConfigStorage {
             put("yaw", yaw);
             put("pitch", pitch);
         }};
+    }
+
+    String pathNumberOfSeekers = "number-of-seekers";
+    String pathMinNumberOfPlayers = "min-players";
+    String pathTimeToStart = "time-to-start";
+    String pathTimeToHide = "time-to-hide";
+    String pathGameDuration = "game-duration";
+
+    public void setNumberOfSeekers(int count) {
+        config.set(pathNumberOfSeekers, count);
+    }
+
+    public int getNumberOfSeekers() {
+        return config.getInt(pathNumberOfSeekers);
+    }
+
+    public void setMinNumberOfPlayers(int count) {
+        config.set(pathMinNumberOfPlayers, count);
+    }
+
+    public int getMinNumberOfPlayers() {
+        return config.getInt(pathMinNumberOfPlayers);
+    }
+
+    public void setTimeToStart(int dur) {
+        config.set(pathTimeToStart, dur); // TODO
+    }
+
+    public void setTimeToHide(int dur) {
+        config.set(pathTimeToHide, dur); // TODO
+    }
+
+    public void setGameDuration(int dur) {
+        config.set(pathGameDuration, dur); // TODO
     }
 
 }
