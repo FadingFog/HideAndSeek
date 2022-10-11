@@ -6,6 +6,7 @@ import org.bukkit.entity.Player;
 public class SetupCommand extends SubCommand {
     private String resultMessage;
     private final ConfigStorage config = ConfigStorage.getInstance();
+    private final String durationErrorMessage = "Duration should contains time format [H/M/S] (E.g. 5m or 20S or 3H20M)";
 
     @Override
     public String getName() {
@@ -39,22 +40,45 @@ public class SetupCommand extends SubCommand {
                             resultMessage = "Usage: /<command> setup min-players <count>";
                         }
                     } else resultMessage = "Usage: /<command> setup min-players <count>";
+
+                    break;
                 case "tts":
                 case "timetostart":
-
-                    resultMessage = "";
+                    if (args.length > 1) {
+                        String dur = args[1];
+                        if (!config.isDuration(dur)) {
+                            resultMessage = durationErrorMessage;
+                        } else {
+                            config.setTimeToStart(dur);
+                            resultMessage = "New time to start has been set";
+                        }
+                    } else resultMessage = "Usage: /<command> setup timetostart <duration [H/M/S]>";
 
                     break;
                 case "tth":
                 case "timetohide":
-
-                    resultMessage = "";
+                    if (args.length > 1) {
+                        String dur = args[1];
+                        if (!config.isDuration(dur)) {
+                            resultMessage = durationErrorMessage;
+                        } else {
+                            config.setTimeToHide(dur);
+                            resultMessage = "New time to hide has been set";
+                        }
+                    } else resultMessage = "Usage: /<command> setup timetohide <duration [H/M/S]>";
 
                     break;
                 case "gd":
                 case "gameduration":
-
-                    resultMessage = "";
+                    if (args.length > 1) {
+                        String dur = args[1];
+                        if (!config.isDuration(dur)) {
+                            resultMessage = durationErrorMessage;
+                        } else {
+                            config.setGameDuration(dur);
+                            resultMessage = "New game duration has been set";
+                        }
+                    } else resultMessage = "Usage: /<command> setup gameduration <duration [H/M/S]>";
 
                     break;
                 default:

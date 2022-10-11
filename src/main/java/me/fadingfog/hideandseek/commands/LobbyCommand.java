@@ -48,7 +48,7 @@ public class LobbyCommand extends SubCommand {
                         if (lobby.openLobby()) {
                             resultMessage = "Lobby opened";
                         } else resultMessage = "Lobby is already open";
-                    } else resultMessage = "First set the lobby location - /hns lobby set";
+                    } else resultMessage = "At first set the lobby location - /hns lobby set";
 
                     break;
                 case ("close"):

@@ -7,7 +7,6 @@ import org.bukkit.entity.Player;
 
 public class ArenaCommand extends SubCommand {
     private String resultMessage;
-    private final HideAndSeek plugin = HideAndSeek.getInstance();
     private final Arena arena = Arena.getInstance();
 
 

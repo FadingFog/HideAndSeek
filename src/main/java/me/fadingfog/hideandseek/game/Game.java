@@ -1,6 +1,12 @@
 package me.fadingfog.hideandseek.game;
 
 import me.fadingfog.hideandseek.ConfigStorage;
+import me.fadingfog.hideandseek.HideAndSeek;
+import me.fadingfog.hideandseek.tasks.HidingCountdown;
+import me.fadingfog.hideandseek.tasks.TaskManager;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 
@@ -9,9 +15,10 @@ import java.util.Random;
 
 public class Game {
     public enum GameState {
-        Closed, WarmUp, Ingame, End;
+        Closed, Preparing, Hiding, Seeking, End;
     }
     private static Game instance;
+    private final HideAndSeek plugin = HideAndSeek.getInstance();
     private final ConfigStorage config = ConfigStorage.getInstance();
     private final Lobby lobby = Lobby.getInstance();
     private final Arena arena = Arena.getInstance();
@@ -35,11 +42,22 @@ public class Game {
     }
 
     public void start() {
-        setGameState(GameState.WarmUp);
         lobby.closeLobby();
         preparePlayers(lobby.getMembers());
         randomizeRoles();
+        setGameState(GameState.Hiding);
 
+        teleportPlayers(arena.getSeekers(), arena.getSeekersLobbyLocation());
+        arena.sendSeekersMessage("You are " + ChatColor.RED + "Seeker");
+        teleportPlayers(arena.getHiders(), arena.getLocation());
+        arena.sendHidersMessage("You are " + ChatColor.DARK_GREEN + "Hider");
+
+        TaskManager taskManager = new TaskManager();
+        taskManager.runTaskTimer(plugin, 20L, 20L);
+    }
+
+    public void stop() {
+        setGameState(GameState.End);
     }
 
 
@@ -73,7 +91,13 @@ public class Game {
             lobby.removeMember(hider);
 
         }
+    }
 
+    public void teleportPlayers(List<GamePlayer> players, Location location) {
+        for (GamePlayer p : players) {
+            Player player = p.getPlayer();
+            player.teleport(location);
+        }
     }
 
 }

@@ -9,7 +9,9 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import java.io.File;
 import java.io.IOException;
 import java.time.Duration;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 
 @SuppressWarnings({"unchecked", "DuplicatedCode"})
 public class ConfigStorage {
@@ -123,16 +125,36 @@ public class ConfigStorage {
         return config.getInt(pathMinNumberOfPlayers);
     }
 
-    public void setTimeToStart(int dur) {
-        config.set(pathTimeToStart, dur); // TODO
+    public void setTimeToStart(String dur) {
+        config.set(pathTimeToStart, dur.toUpperCase()); // TODO
     }
 
-    public void setTimeToHide(int dur) {
-        config.set(pathTimeToHide, dur); // TODO
+    public long getTimeToStart() {
+        Duration dur = Duration.parse("PT" + config.get(pathTimeToStart));
+        return dur.getSeconds();
     }
 
-    public void setGameDuration(int dur) {
-        config.set(pathGameDuration, dur); // TODO
+    public void setTimeToHide(String dur) {
+        config.set(pathTimeToHide, dur.toUpperCase()); // TODO
     }
 
+    public long getTimeToHide() {
+        Duration dur = Duration.parse("PT" + config.get(pathTimeToHide));
+        return dur.getSeconds();
+    }
+
+    public void setGameDuration(String dur) {
+        config.set(pathGameDuration, dur.toUpperCase()); // TODO
+    }
+
+    public long getGameDuration() {
+        Duration dur = Duration.parse("PT" + config.get(pathGameDuration));
+        return dur.getSeconds();
+    }
+
+    public boolean isDuration(String dur) {
+        List<String> checkList = Arrays.asList("h", "m", "s");
+
+        return checkList.stream().anyMatch(dur.toLowerCase()::contains);
+    }
 }

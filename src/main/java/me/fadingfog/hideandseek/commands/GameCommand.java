@@ -29,7 +29,12 @@ public class GameCommand extends SubCommand {
         if (args.length > 0) {
             switch (args[0].toLowerCase()) {
                 case ("start"):
-                    if (!(arena.getLocation() != null && lobby.getMembers().size() >= config.getMinNumberOfPlayers())) {
+                    if (arena.getLocation() == null || arena.getSeekersLobbyLocation() == null) {
+                        resultMessage = "Arena or seekers lobby location is not set";
+                        break;
+                    }
+                    if (lobby.getMembers().size() < config.getMinNumberOfPlayers() || lobby.getMembers().size() < config.getNumberOfSeekers() * 2) {
+                        resultMessage = "Not enough players for start game";
                         break;
                     }
                     this.game.start();

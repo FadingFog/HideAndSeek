@@ -6,6 +6,7 @@ import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Arena {
     private static Arena instance;
@@ -15,7 +16,9 @@ public class Arena {
     private final String configSeekersPath = "seekers-lobby-location";
     private Location location = config.getLocation(configPath);
     private Location seekersLobbyLocation = config.getLocation(configSeekersPath);
+
     private final List<GamePlayer> players = new ArrayList<>();
+
 
     public static Arena getInstance() {
         return instance;
@@ -51,8 +54,31 @@ public class Arena {
         this.players.add(player);
     }
 
-    public void sendArenaMessage(String msg, List<Player> members) {
-        for (Player player : members) {
+    public List<GamePlayer> getSeekers() {
+        return this.players.stream().filter(p -> p.getRole() == GamePlayer.Role.SEEKER).collect(Collectors.toList());
+    }
+
+    public List<GamePlayer> getHiders() {
+        return this.players.stream().filter(p -> p.getRole() == GamePlayer.Role.HIDER).collect(Collectors.toList());
+    }
+
+    public void sendArenaMessage(String msg) {
+        for (GamePlayer p : players) {
+            Player player = p.getPlayer();
+            player.sendMessage(msg);
+        }
+    }
+
+    public void sendSeekersMessage(String msg) {
+        for (GamePlayer seeker : getSeekers()) {
+            Player player = seeker.getPlayer();
+            player.sendMessage(msg);
+        }
+    }
+
+    public void sendHidersMessage(String msg) {
+        for (GamePlayer hider : getHiders()) {
+            Player player = hider.getPlayer();
             player.sendMessage(msg);
         }
     }
