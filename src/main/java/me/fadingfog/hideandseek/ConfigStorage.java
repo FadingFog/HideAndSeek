@@ -56,8 +56,12 @@ public class ConfigStorage {
         config = YamlConfiguration.loadConfiguration(configFile);
     }
 
-    public void loadDefaults() {
-//        config.addDefault("anchor", ""); // TODO
+    public void loadDefaults() { // TODO
+        config.addDefault("number-of-seekers", "3");
+        config.addDefault("min-players", "6");
+        config.addDefault("time-to-start", "10s");
+        config.addDefault("time-to-hide", "10");
+        config.addDefault("game-duration", "20");
         config.options().copyDefaults(true);
     }
 

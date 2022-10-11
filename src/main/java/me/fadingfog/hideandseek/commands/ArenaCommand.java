@@ -26,12 +26,26 @@ public class ArenaCommand extends SubCommand {
             switch (args[0].toLowerCase()) {
                 case ("set"):
                     Location playerLoc = player.getLocation();
-                    if (args.length > 1 && args[1].toLowerCase().equals("seekers")) {
-                        arena.setSeekersLobbyLocation(playerLoc);
-                        resultMessage = "New seekers lobby location set";
+                    if (args.length > 1) {
+                        if (args[1].equalsIgnoreCase("seekers")) {
+                            try {
+                                if (playerLoc.getWorld() != arena.getLocation().getWorld()) {
+                                    resultMessage = "Seekers lobby location should be the same as arena location";
+                                    break;
+                                }
+                            } catch (Exception e) {
+                                resultMessage = "At first set arena location - /hns arena set";
+                                break;
+                            }
+
+                            arena.setSeekersLobbyLocation(playerLoc);
+                            resultMessage = "New seekers lobby location set";
+                        } else resultMessage = "Usage: /<command> arena set [seekers]";
+
+                    } else {
+                        arena.setLocation(playerLoc);
+                        resultMessage = "New arena location set";
                     }
-                    arena.setLocation(playerLoc);
-                    resultMessage = "New arena location set";
 
                     break;
                 default:

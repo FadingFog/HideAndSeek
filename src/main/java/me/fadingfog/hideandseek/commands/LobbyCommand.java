@@ -1,7 +1,10 @@
 package me.fadingfog.hideandseek.commands;
 
 import me.fadingfog.hideandseek.HideAndSeek;
+import me.fadingfog.hideandseek.game.Arena;
+import me.fadingfog.hideandseek.game.Game;
 import me.fadingfog.hideandseek.game.Lobby;
+import me.fadingfog.hideandseek.tasks.PrepareCountdown;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -19,8 +22,11 @@ import java.util.stream.Collectors;
 
 public class LobbyCommand extends SubCommand {
     private String resultMessage;
-    private final Lobby lobby = Lobby.getInstance();
     private final HideAndSeek plugin = HideAndSeek.getInstance();
+    private final Lobby lobby = Lobby.getInstance();
+    private final Arena arena = Arena.getInstance();
+    private final Game game = Game.getInstance();
+    PrepareCountdown prepareCountdown = null; // DEBUG DELETE AFTER TEST
 
 
     @Override
@@ -65,13 +71,23 @@ public class LobbyCommand extends SubCommand {
                     }
                     if (lobby.addMember(player)) {
                         resultMessage = "You are joined lobby";
-                    } else resultMessage = "Sorry, but lobby is closed or you're already in it";
+                    } else if (game.getGameState() != Game.GameState.Closed) {
+                        resultMessage = "Sorry, but the game has already started";
+                    } else if (lobby.getLobbyState() == Lobby.LobbyState.Closed) {
+                        resultMessage = "Sorry, but lobby is closed";
+                    } else {
+                        resultMessage = "You are already in lobby";
+                    }
 
                     break;
                 case ("exit"):
                     if (lobby.removeMember(player)) {
                         resultMessage = "You are leaved lobby";
-                    } else resultMessage = "Sorry, but you're not in lobby";
+                    } else if (arena.removePlayer(player)) {
+                        resultMessage = "You are leaved game";
+                    } else {
+                        resultMessage = "Sorry, but you're not in game";
+                    }
 
                     break;
                 case ("members"):
@@ -80,6 +96,12 @@ public class LobbyCommand extends SubCommand {
 
                     break;
                 case ("test"):
+                    if (args.length > 1 && args[1].equals("cancel")) {
+                        prepareCountdown.cancel();
+                    } else {
+                        prepareCountdown = new PrepareCountdown();
+                        prepareCountdown.runTaskTimer(plugin, 0L, 20L);
+                    }
 
                     break;
                 default:

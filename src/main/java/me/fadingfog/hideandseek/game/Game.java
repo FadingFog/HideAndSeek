@@ -25,6 +25,7 @@ public class Game {
 
     private GameState gameState = GameState.Closed;
 
+
     public static Game getInstance() {
         return instance;
     }

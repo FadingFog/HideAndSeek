@@ -54,6 +54,28 @@ public class Arena {
         this.players.add(player);
     }
 
+    public GamePlayer getPlayer(Player player) {
+        List<GamePlayer> gamePlayers = this.players.stream().filter(p -> p.getPlayer() == player).collect(Collectors.toList());
+        if (gamePlayers.size() > 0) {
+            return gamePlayers.get(0);
+        }
+        return null;
+    }
+
+    public boolean removePlayer(GamePlayer gPlayer) {
+        // TODO teleport player to /back
+        return this.players.remove(gPlayer);
+    }
+
+    public boolean removePlayer(Player player) {
+        GamePlayer gPlayer = getPlayer(player);
+        if (gPlayer == null) {
+            return false;
+        }
+        // TODO teleport player to /back
+        return this.players.remove(gPlayer);
+    }
+
     public List<GamePlayer> getSeekers() {
         return this.players.stream().filter(p -> p.getRole() == GamePlayer.Role.SEEKER).collect(Collectors.toList());
     }
