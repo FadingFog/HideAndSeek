@@ -29,11 +29,7 @@ public class HidingCountdown extends BukkitRunnable {
             timerDur = ConfigStorage.parseToDuration(timer);
             arena.sendArenaMessage("Hiders have " + ConfigStorage.formatDuration(timerDur) + " to hide");
 
-        } else if (timer == init_timer / 2) {
-            timerDur = ConfigStorage.parseToDuration(timer);
-            arena.sendArenaMessage("Hiders have " + ConfigStorage.formatDuration(timerDur) + " left to hide");
-
-        } else if (timer == 30) {
+        } else if (timer == init_timer / 2 || timer == 30) {
             timerDur = ConfigStorage.parseToDuration(timer);
             arena.sendArenaMessage("Hiders have " + ConfigStorage.formatDuration(timerDur) + " left to hide");
 

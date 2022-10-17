@@ -17,7 +17,7 @@ public class TeleportUtil {
         User user = ess.getUser(player);
 
         try {
-            user.getTeleport().teleport(location, charge, PlayerTeleportEvent.TeleportCause.PLUGIN);
+            user.getTeleport().now(location, false, PlayerTeleportEvent.TeleportCause.PLUGIN);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -28,8 +28,14 @@ public class TeleportUtil {
 
         try {
             user.getTeleport().back(charge);
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (Exception ignore) {
+            try {
+                String homeName = user.getHomes().get(0);
+                Location home = user.getHome(homeName);
+                user.getTeleport().now(home, false, PlayerTeleportEvent.TeleportCause.PLUGIN);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 }

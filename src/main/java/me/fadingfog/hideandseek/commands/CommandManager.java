@@ -1,5 +1,6 @@
 package me.fadingfog.hideandseek.commands;
 
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -30,7 +31,8 @@ public class CommandManager implements CommandExecutor {
                     SubCommand sCommand = getSubCommands().get(i);
                     if (args[0].equalsIgnoreCase(sCommand.getName())) {
                         sCommand.perform(player, Arrays.copyOfRange(args, 1, args.length));
-                        player.sendMessage(sCommand.getResultMessage());
+                        String prefix = ChatColor.DARK_GRAY + "[" + ChatColor.GREEN + "Event" + ChatColor.DARK_GRAY + "] ";
+                        player.sendMessage(prefix + sCommand.getResultMessage());
                         return true;
                     }
                 }
