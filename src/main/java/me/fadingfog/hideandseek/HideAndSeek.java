@@ -45,11 +45,12 @@ public final class HideAndSeek extends JavaPlugin {
         configStorage.setup();
 
         final Lobby lobby = new Lobby();
-        final Arena arena = new Arena();
-        final Game game = new Game();
-
         lobby.setup();
+
+        final Arena arena = new Arena();
         arena.setup();
+
+        final Game game = new Game();
         game.setup();
     }
 }

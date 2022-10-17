@@ -14,19 +14,18 @@ public class PrepareCountdown extends BukkitRunnable {
     int timer = (int) config.getTimeToStart();
 
     Location lobbyLoc = lobby.getLocation();
-    float pitch = 0.5F;
+    private float pitch = 0.5F;
 
     @Override
     public void run() {
         lobby.sendLobbyMessage("Game will start in " + timer);
         if (timer == 0) {
             lobbyLoc.getWorld().playSound(lobbyLoc, Sound.LEVEL_UP, 2, 1);
-            game.setGameState(Game.GameState.Hiding);
             cancel();
+            game.setGameState(Game.GameState.Hiding);
         } else if (timer <= 5) {
             lobbyLoc.getWorld().playSound(lobbyLoc, Sound.NOTE_PIANO, 2, pitch);
             pitch += 0.33F;
-            System.out.println(timer);
         }
         timer--;
     }

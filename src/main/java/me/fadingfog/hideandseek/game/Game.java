@@ -2,9 +2,7 @@ package me.fadingfog.hideandseek.game;
 
 import me.fadingfog.hideandseek.ConfigStorage;
 import me.fadingfog.hideandseek.HideAndSeek;
-import me.fadingfog.hideandseek.tasks.HidingCountdown;
 import me.fadingfog.hideandseek.tasks.TaskManager;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -44,14 +42,12 @@ public class Game {
 
     public void start() {
         lobby.closeLobby();
-        preparePlayers(lobby.getMembers());
-        randomizeRoles();
-        setGameState(GameState.Hiding);
+        List<Player> members = lobby.getMembers();
+        lobby.clearMembers();
+        preparePlayers(members);
+        randomizeRoles(members);
 
-        teleportPlayers(arena.getSeekers(), arena.getSeekersLobbyLocation());
-        arena.sendSeekersMessage("You are " + ChatColor.RED + "Seeker");
-        teleportPlayers(arena.getHiders(), arena.getLocation());
-        arena.sendHidersMessage("You are " + ChatColor.DARK_GREEN + "Hider");
+        setGameState(GameState.Preparing);
 
         TaskManager taskManager = new TaskManager();
         taskManager.runTaskTimer(plugin, 20L, 20L);
@@ -70,35 +66,35 @@ public class Game {
         }
     }
 
-    public void randomizeRoles() {
-        int numberOfSeekers = config.getNumberOfSeekers();
-        List<Player> hiders = lobby.getMembers();
-
+    public void randomizeRoles(List<Player> hiders) {
+        final int numberOfSeekers = config.getNumberOfSeekers();
         Random random = new Random();
 
 
         for (int i = 0; i < numberOfSeekers; i++){
             int randomIndex = random.nextInt(hiders.size());
             Player seeker = hiders.get(randomIndex);
-            GamePlayer player = new GamePlayer(GamePlayer.Role.SEEKER, seeker);
-            arena.addPlayer(player);
+            GamePlayer gPlayer = new GamePlayer(GamePlayer.Role.SEEKER, seeker);
+            arena.addGamePlayer(gPlayer);
             hiders.remove(randomIndex);
-            lobby.removeMember(seeker);
         }
 
         for (Player hider : hiders) {
-            GamePlayer player = new GamePlayer(GamePlayer.Role.HIDER, hider);
-            arena.addPlayer(player);
-            lobby.removeMember(hider);
-
+            GamePlayer gPlayer = new GamePlayer(GamePlayer.Role.HIDER, hider);
+            arena.addGamePlayer(gPlayer);
         }
     }
 
-    public void teleportPlayers(List<GamePlayer> players, Location location) {
-        for (GamePlayer p : players) {
-            Player player = p.getPlayer();
+    public void teleportPlayers(List<GamePlayer> gamePlayers, Location location) {
+        for (GamePlayer gp : gamePlayers) {
+            Player player = gp.getPlayer();
             player.teleport(location);
         }
     }
 
+    public void returnPlayersToLobby() {
+        lobby.addMembers(arena.getPlayers());
+        teleportPlayers(arena.getGamePlayers(), lobby.getLocation());
+        arena.clearGamePlayers();
+    }
 }

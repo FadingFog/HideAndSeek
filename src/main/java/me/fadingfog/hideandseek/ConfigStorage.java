@@ -9,9 +9,8 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import java.io.File;
 import java.io.IOException;
 import java.time.Duration;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
+import java.util.regex.Pattern;
 
 @SuppressWarnings({"unchecked", "DuplicatedCode"})
 public class ConfigStorage {
@@ -56,12 +55,12 @@ public class ConfigStorage {
         config = YamlConfiguration.loadConfiguration(configFile);
     }
 
-    public void loadDefaults() { // TODO
-        config.addDefault("number-of-seekers", "3");
-        config.addDefault("min-players", "6");
-        config.addDefault("time-to-start", "10s");
-        config.addDefault("time-to-hide", "10");
-        config.addDefault("game-duration", "20");
+    public void loadDefaults() {
+        config.addDefault("number-of-seekers", 3);
+        config.addDefault("min-players", 6);
+        config.addDefault("time-to-start", "10S");
+        config.addDefault("time-to-hide", "10M");
+        config.addDefault("time-to-seek", "20M");
         config.options().copyDefaults(true);
     }
 
@@ -111,7 +110,7 @@ public class ConfigStorage {
     String pathMinNumberOfPlayers = "min-players";
     String pathTimeToStart = "time-to-start";
     String pathTimeToHide = "time-to-hide";
-    String pathGameDuration = "game-duration";
+    String pathGameDuration = "time-to-seek";
 
     public void setNumberOfSeekers(int count) {
         config.set(pathNumberOfSeekers, count);
@@ -130,35 +129,52 @@ public class ConfigStorage {
     }
 
     public void setTimeToStart(String dur) {
-        config.set(pathTimeToStart, dur.toUpperCase()); // TODO
+        config.set(pathTimeToStart, dur.toUpperCase());
     }
 
     public long getTimeToStart() {
-        Duration dur = Duration.parse("PT" + config.get(pathTimeToStart));
+        String time = (String) config.get(pathTimeToStart);
+        Duration dur = Duration.parse("PT" + time.toUpperCase());
         return dur.getSeconds();
     }
 
     public void setTimeToHide(String dur) {
-        config.set(pathTimeToHide, dur.toUpperCase()); // TODO
+        config.set(pathTimeToHide, dur.toUpperCase());
     }
 
     public long getTimeToHide() {
-        Duration dur = Duration.parse("PT" + config.get(pathTimeToHide));
+        String time = (String) config.get(pathTimeToHide);
+        Duration dur = Duration.parse("PT" + time.toUpperCase());
         return dur.getSeconds();
     }
 
-    public void setGameDuration(String dur) {
-        config.set(pathGameDuration, dur.toUpperCase()); // TODO
+    public void setTimeToSeek(String dur) {
+        config.set(pathGameDuration, dur.toUpperCase());
     }
 
-    public long getGameDuration() {
-        Duration dur = Duration.parse("PT" + config.get(pathGameDuration));
+    public long getTimeToSeek() {
+        String time = (String) config.get(pathGameDuration);
+        Duration dur = Duration.parse("PT" + time.toUpperCase());
         return dur.getSeconds();
     }
 
     public boolean isDuration(String dur) {
-        List<String> checkList = Arrays.asList("h", "m", "s");
+        return Pattern.matches("^(\\d{1,2}[HhMmSs])*$", dur);
+    }
 
-        return checkList.stream().anyMatch(dur.toLowerCase()::contains);
+    public static String formatDuration(Duration d) {
+        long hours = d.toHours();
+        d = d.minusHours(hours);
+        long minutes = d.toMinutes();
+        d = d.minusMinutes(minutes);
+        long seconds = d.getSeconds();
+        return
+                (hours == 0 ? "" : hours + " hour(s),") +
+                (minutes ==  0 ? "" : minutes + " minute(s),") +
+                (seconds == 0 ? "" : seconds + " second(s),");
+    }
+
+    public static Duration parseToDuration(int seconds) {
+        return Duration.parse("PT" + seconds + "S");
     }
 }

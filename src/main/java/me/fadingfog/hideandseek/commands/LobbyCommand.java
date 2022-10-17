@@ -5,13 +5,12 @@ import me.fadingfog.hideandseek.game.Arena;
 import me.fadingfog.hideandseek.game.Game;
 import me.fadingfog.hideandseek.game.Lobby;
 import me.fadingfog.hideandseek.tasks.PrepareCountdown;
+import me.fadingfog.hideandseek.utils.TeleportUtil;
 import org.apache.commons.lang.StringUtils;
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.*;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
 import java.util.Arrays;
@@ -83,11 +82,13 @@ public class LobbyCommand extends SubCommand {
                 case ("exit"):
                     if (lobby.removeMember(player)) {
                         resultMessage = "You are leaved lobby";
-                    } else if (arena.removePlayer(player)) {
+                    } else if (arena.removeGamePlayer(player)) {
                         resultMessage = "You are leaved game";
                     } else {
                         resultMessage = "Sorry, but you're not in game";
+                        break;
                     }
+                    TeleportUtil.teleportPlayerBack(player);
 
                     break;
                 case ("members"):

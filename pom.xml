@@ -69,6 +69,10 @@
             <id>placeholderapi</id>
             <url>https://repo.extendedclip.com/content/repositories/placeholderapi/</url>
         </repository>
+        <repository> <!-- EssentialsAPI -->
+            <id>essentials-releases</id>
+            <url>https://repo.essentialsx.net/releases/</url>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -88,12 +92,12 @@
 <!--            <artifactId>checker-qual</artifactId>-->
 <!--            <version>3.25.0</version>-->
 <!--        </dependency>-->
-<!--        <dependency>-->
-<!--            <groupId>net.essentialsx</groupId>-->
-<!--            <artifactId>EssentialsX</artifactId>-->
-<!--            <version>2.19.0</version>-->
-<!--            <scope>provided</scope>-->
-<!--        </dependency>-->
+        <dependency>
+            <groupId>net.essentialsx</groupId>
+            <artifactId>EssentialsX</artifactId>
+            <version>2.19.0</version>
+            <scope>provided</scope>
+        </dependency>
 <!--        <dependency> &lt;!&ndash; Placeholder API new version &ndash;&gt;-->
 <!--            <groupId>com.google.code.gson</groupId>-->
 <!--            <artifactId>gson</artifactId>-->

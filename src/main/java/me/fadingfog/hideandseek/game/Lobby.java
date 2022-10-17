@@ -1,6 +1,7 @@
 package me.fadingfog.hideandseek.game;
 
 import me.fadingfog.hideandseek.ConfigStorage;
+import me.fadingfog.hideandseek.utils.TeleportUtil;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
@@ -56,7 +57,6 @@ public class Lobby {
     public boolean closeLobby() {
         if (this.lobbyState == LobbyState.Open) {
             setLobbyState(LobbyState.Closed);
-//            this.members.clear(); // TODO Teleport players to /back or "teleport" argument and check if
             return true;
         }
         return false;
@@ -69,17 +69,23 @@ public class Lobby {
     public boolean addMember(Player player) {
         if (!(this.members.contains(player)) && this.lobbyState == LobbyState.Open) {
             this.members.add(player);
-            player.teleport(this.location);  // TODO: Teleport via Essentials api (to /back support if false in config)
-            // TODO https://github.com/essentials/Essentials/blob/2.x/Essentials/src/com/earth2me/essentials/commands/Commandback.java
+            TeleportUtil.teleportPlayer(player, this.location);
             return true;
         }
         return false;
+    }
+
+    public void addMembers(List<Player> players) {
+        this.members.addAll(players);
     }
 
     public boolean removeMember(Player player) {
         return this.members.remove(player);
     }
 
+    public void clearMembers() {
+        this.members.clear();
+    }
 
     public void sendLobbyMessage(String msg) {
         for (Player player : members) {

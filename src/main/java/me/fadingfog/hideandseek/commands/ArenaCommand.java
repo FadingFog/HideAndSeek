@@ -1,6 +1,5 @@
 package me.fadingfog.hideandseek.commands;
 
-import me.fadingfog.hideandseek.HideAndSeek;
 import me.fadingfog.hideandseek.game.Arena;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;

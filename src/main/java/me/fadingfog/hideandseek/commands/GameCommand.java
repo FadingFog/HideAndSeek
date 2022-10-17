@@ -9,9 +9,9 @@ import org.bukkit.entity.Player;
 public class GameCommand extends SubCommand {
     private String resultMessage;
     private final ConfigStorage config = ConfigStorage.getInstance();
-    private final Game game = Game.getInstance();
-    private final Arena arena = Arena.getInstance();
     private final Lobby lobby = Lobby.getInstance();
+    private final Arena arena = Arena.getInstance();
+    private final Game game = Game.getInstance();
 
 
     @Override
@@ -33,14 +33,21 @@ public class GameCommand extends SubCommand {
                         resultMessage = "Arena or seekers lobby location is not set";
                         break;
                     }
+                    if (config.getMinNumberOfPlayers() <= config.getNumberOfSeekers()) {
+                        resultMessage = "Minimum number of players cannot be less than the number of seekers";
+                        break;
+                    }
                     if (lobby.getMembers().size() < config.getMinNumberOfPlayers() || lobby.getMembers().size() < config.getNumberOfSeekers() * 2) {
                         resultMessage = "Not enough players for start game";
                         break;
                     }
                     this.game.start();
+                    resultMessage = "Game started";
 
                     break;
                 case ("stop"):
+                    this.game.stop();
+                    resultMessage = "Game stopped";
 
                     break;
                 case ("test"):

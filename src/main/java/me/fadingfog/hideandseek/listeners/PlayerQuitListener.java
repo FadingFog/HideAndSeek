@@ -1,8 +1,8 @@
 package me.fadingfog.hideandseek.listeners;
 
 import me.fadingfog.hideandseek.game.Arena;
-import me.fadingfog.hideandseek.game.GamePlayer;
 import me.fadingfog.hideandseek.game.Lobby;
+import me.fadingfog.hideandseek.utils.TeleportUtil;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -21,9 +21,11 @@ public class PlayerQuitListener implements Listener {
 
         if (world == lobby.getLocation().getWorld() || world == arena.getLocation().getWorld()) {
             lobby.removeMember(player);
-            arena.removePlayer(player);
-            // TODO send message to all
-            // TODO teleport player to /back
+            arena.removeGamePlayer(player);
+            for (Player p : world.getPlayers()) {
+                p.sendMessage(player.getDisplayName() + " left the game");
+            }
+            TeleportUtil.teleportPlayerBack(player);
         }
     }
 

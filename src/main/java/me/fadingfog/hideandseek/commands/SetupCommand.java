@@ -75,8 +75,8 @@ public class SetupCommand extends SubCommand {
                         if (!config.isDuration(dur)) {
                             resultMessage = durationErrorMessage;
                         } else {
-                            config.setGameDuration(dur);
-                            resultMessage = "New game duration has been set";
+                            config.setTimeToSeek(dur);
+                            resultMessage = "New time to seek has been set";
                         }
                     } else resultMessage = "Usage: /<command> setup gameduration <duration [H/M/S]>";
 

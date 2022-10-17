@@ -16,7 +16,10 @@ public class TaskManager extends BukkitRunnable {
         switch (game.getGameState()) {
             case Closed:
             case End:
+                game.returnPlayersToLobby();
                 cancel();
+                cancelAllCountdowns();
+                game.setGameState(Game.GameState.Closed);
                 break;
             case Preparing:
                 if (prepareCountdown == null) {
@@ -40,5 +43,11 @@ public class TaskManager extends BukkitRunnable {
                 plugin.getLogger().severe("[TaskManager] Unknown GameState");
                 break;
         }
+    }
+
+    private void cancelAllCountdowns() {
+        if (prepareCountdown != null) prepareCountdown.cancel();
+        if (hidingCountdown != null) hidingCountdown.cancel();
+        if (seekingCountdown != null) seekingCountdown.cancel();
     }
 }

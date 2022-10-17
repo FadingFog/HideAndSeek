@@ -17,7 +17,7 @@ public class Arena {
     private Location location = config.getLocation(configPath);
     private Location seekersLobbyLocation = config.getLocation(configSeekersPath);
 
-    private final List<GamePlayer> players = new ArrayList<>();
+    private final List<GamePlayer> gamePlayers = new ArrayList<>();
 
 
     public static Arena getInstance() {
@@ -46,47 +46,53 @@ public class Arena {
         this.seekersLobbyLocation = config.getLocation(configSeekersPath);
     }
 
-    public List<GamePlayer> getPlayers() {
-        return this.players;
+    public List<GamePlayer> getGamePlayers() {
+        return this.gamePlayers;
     }
 
-    public void addPlayer(GamePlayer player) {
-        this.players.add(player);
+    public List<Player> getPlayers() {
+        return this.gamePlayers.stream().map(GamePlayer::getPlayer).collect(Collectors.toList());
     }
 
-    public GamePlayer getPlayer(Player player) {
-        List<GamePlayer> gamePlayers = this.players.stream().filter(p -> p.getPlayer() == player).collect(Collectors.toList());
+    public void addGamePlayer(GamePlayer gPlayer) {
+        this.gamePlayers.add(gPlayer);
+    }
+
+    public GamePlayer getGamePlayer(Player player) {
+        List<GamePlayer> gamePlayers = this.gamePlayers.stream().filter(p -> p.getPlayer() == player).collect(Collectors.toList());
         if (gamePlayers.size() > 0) {
             return gamePlayers.get(0);
         }
         return null;
     }
 
-    public boolean removePlayer(GamePlayer gPlayer) {
-        // TODO teleport player to /back
-        return this.players.remove(gPlayer);
+    public boolean removeGamePlayer(GamePlayer gPlayer) {
+        return this.gamePlayers.remove(gPlayer);
     }
 
-    public boolean removePlayer(Player player) {
-        GamePlayer gPlayer = getPlayer(player);
+    public boolean removeGamePlayer(Player player) {
+        GamePlayer gPlayer = getGamePlayer(player);
         if (gPlayer == null) {
             return false;
         }
-        // TODO teleport player to /back
-        return this.players.remove(gPlayer);
+        return this.gamePlayers.remove(gPlayer);
+    }
+
+    public void clearGamePlayers() {
+        this.gamePlayers.clear();
     }
 
     public List<GamePlayer> getSeekers() {
-        return this.players.stream().filter(p -> p.getRole() == GamePlayer.Role.SEEKER).collect(Collectors.toList());
+        return this.gamePlayers.stream().filter(p -> p.getRole() == GamePlayer.Role.SEEKER).collect(Collectors.toList());
     }
 
     public List<GamePlayer> getHiders() {
-        return this.players.stream().filter(p -> p.getRole() == GamePlayer.Role.HIDER).collect(Collectors.toList());
+        return this.gamePlayers.stream().filter(p -> p.getRole() == GamePlayer.Role.HIDER).collect(Collectors.toList());
     }
 
     public void sendArenaMessage(String msg) {
-        for (GamePlayer p : players) {
-            Player player = p.getPlayer();
+        for (GamePlayer gp : gamePlayers) {
+            Player player = gp.getPlayer();
             player.sendMessage(msg);
         }
     }
