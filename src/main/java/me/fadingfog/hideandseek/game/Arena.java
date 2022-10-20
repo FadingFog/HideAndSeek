@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static me.fadingfog.hideandseek.commands.CommandManager.prefix;
+
 public class Arena {
     private static Arena instance;
     private final ConfigStorage config = ConfigStorage.getInstance();
@@ -93,21 +95,21 @@ public class Arena {
     public void sendArenaMessage(String msg) {
         for (GamePlayer gp : gamePlayers) {
             Player player = gp.getPlayer();
-            player.sendMessage(msg);
+            player.sendMessage(prefix + msg);
         }
     }
 
     public void sendSeekersMessage(String msg) {
         for (GamePlayer seeker : getSeekers()) {
             Player player = seeker.getPlayer();
-            player.sendMessage(msg);
+            player.sendMessage(prefix + msg);
         }
     }
 
     public void sendHidersMessage(String msg) {
         for (GamePlayer hider : getHiders()) {
             Player player = hider.getPlayer();
-            player.sendMessage(msg);
+            player.sendMessage(prefix + msg);
         }
     }
 

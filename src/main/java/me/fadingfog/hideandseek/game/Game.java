@@ -3,7 +3,6 @@ package me.fadingfog.hideandseek.game;
 import me.fadingfog.hideandseek.ConfigStorage;
 import me.fadingfog.hideandseek.HideAndSeek;
 import me.fadingfog.hideandseek.tasks.TaskManager;
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
@@ -13,7 +12,21 @@ import java.util.Random;
 
 public class Game {
     public enum GameState {
-        Closed, Preparing, Hiding, Seeking, End;
+        Closed("Closed"),
+        Preparing("Preparing"),
+        Hiding("Hiding"),
+        Seeking("Seeking"),
+        End("End");
+
+        private final String name;
+
+        GameState(String name) {
+            this.name = name;
+        }
+
+        public String getName() {
+            return name;
+        }
     }
     private static Game instance;
     private final HideAndSeek plugin = HideAndSeek.getInstance();
@@ -43,18 +56,23 @@ public class Game {
     public void start() {
         lobby.closeLobby();
         List<Player> members = lobby.getMembers();
-        lobby.clearMembers();
         preparePlayers(members);
         randomizeRoles(members);
+        lobby.clearMembers();
 
         setGameState(GameState.Preparing);
 
         TaskManager taskManager = new TaskManager();
-        taskManager.runTaskTimer(plugin, 20L, 20L);
+        taskManager.runTaskTimer(plugin, 20L, 10L);
     }
 
-    public void stop() {
-        setGameState(GameState.End);
+    public boolean stop() {
+        if (getGameState() != Game.GameState.Closed) {
+            setGameState(GameState.End);
+            return true;
+        } else {
+            return false;
+        }
     }
 
 

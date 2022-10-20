@@ -8,9 +8,11 @@ import org.bukkit.entity.Player;
 import java.util.ArrayList;
 import java.util.List;
 
+import static me.fadingfog.hideandseek.commands.CommandManager.prefix;
+
 public class Lobby {
     public enum LobbyState {
-        Closed, Open;
+        Closed, Open
     }
     private static Lobby instance;
     private LobbyState lobbyState = LobbyState.Closed;
@@ -89,7 +91,7 @@ public class Lobby {
 
     public void sendLobbyMessage(String msg) {
         for (Player player : members) {
-            player.sendMessage(msg);
+            player.sendMessage(prefix + msg);
         }
     }
 

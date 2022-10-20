@@ -7,21 +7,24 @@ public class GamePlayer {
         HIDER("Hider"),
         SEEKER("Seeker");
 
-        final String name;
+        private final String name;
 
         Role(String name) {
             this.name = name;
+        }
+
+        public String getName() {
+            return name;
         }
     }
 
     private Role role;
     private Player player;
+    private int score = 0;
 
     public GamePlayer(Role role, Player player) {
         this.role = role;
         this.player = player;
-
-        player.sendMessage("You are a " + role.name);
     }
 
     public Role getRole() {
@@ -38,5 +41,17 @@ public class GamePlayer {
 
     public void setPlayer(Player player) {
         this.player = player;
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
+    }
+
+    public String getName() {
+        return player.getDisplayName();
     }
 }

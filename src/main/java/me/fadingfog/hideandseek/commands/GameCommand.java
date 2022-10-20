@@ -41,13 +41,16 @@ public class GameCommand extends SubCommand {
                         resultMessage = "Not enough players for start game";
                         break;
                     }
-                    this.game.start();
+                    game.start();
                     resultMessage = "Game started";
 
                     break;
                 case ("stop"):
-                    this.game.stop();
-                    resultMessage = "Game stopped";
+                    if (game.stop()) {
+                        resultMessage = "Game stopped";
+                    } else {
+                        resultMessage = "Game hasn't started yet";
+                    }
 
                     break;
                 case ("test"):

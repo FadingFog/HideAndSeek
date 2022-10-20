@@ -162,19 +162,31 @@ public class ConfigStorage {
         return Pattern.matches("^(\\d{1,2}[HhMmSs])*$", dur);
     }
 
-    public static String formatDuration(Duration d) {
+    public static String formatDuration(int totalSeconds) {
+        Duration d = Duration.parse("PT" + totalSeconds + "S");
         long hours = d.toHours();
         d = d.minusHours(hours);
         long minutes = d.toMinutes();
         d = d.minusMinutes(minutes);
         long seconds = d.getSeconds();
         return
-                (hours == 0 ? "" : hours + " hour(s),") +
-                (minutes ==  0 ? "" : minutes + " minute(s),") +
-                (seconds == 0 ? "" : seconds + " second(s),");
+                (hours == 0 ? "" : hours + " hour") +
+                (minutes ==  0 ? "" : minutes + " minutes") +
+                (seconds == 0 ? "" : seconds + " seconds");
     }
 
-    public static Duration parseToDuration(int seconds) {
-        return Duration.parse("PT" + seconds + "S");
+    public static String formatDurationDigits(int totalSeconds) {
+        Duration d = Duration.parse("PT" + totalSeconds + "S");
+        long hours = d.toHours();
+        d = d.minusHours(hours);
+        long minutes = d.toMinutes();
+        d = d.minusMinutes(minutes);
+        long seconds = d.getSeconds();
+        if (hours != 0) {
+            return String.format("%02d:%02d:%02d", hours, minutes, seconds);
+        } else {
+            return String.format("%d:%02d", minutes, seconds);
+        }
     }
+
 }

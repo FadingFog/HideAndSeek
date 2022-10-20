@@ -1,12 +1,15 @@
 package me.fadingfog.hideandseek;
 
 import me.fadingfog.hideandseek.commands.CommandManager;
+import me.fadingfog.hideandseek.commands.LobbyExitCommand;
+import me.fadingfog.hideandseek.commands.LobbyJoinCommand;
 import me.fadingfog.hideandseek.game.Arena;
 import me.fadingfog.hideandseek.game.Game;
 import me.fadingfog.hideandseek.game.Lobby;
+import me.fadingfog.hideandseek.listeners.HitPlayerListener;
+import me.fadingfog.hideandseek.listeners.PlayerQuitListener;
 import me.fadingfog.hideandseek.placeholder.HnsExpansion;
 import org.bukkit.Bukkit;
-import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class HideAndSeek extends JavaPlugin {
@@ -32,7 +35,17 @@ public final class HideAndSeek extends JavaPlugin {
             Bukkit.getPluginManager().disablePlugin(this);
         }
 
+        if (Bukkit.getPluginManager().getPlugin("Essentials") == null){
+            getLogger().warning("Could not find Essentials! This plugin is required.");
+            Bukkit.getPluginManager().disablePlugin(this);
+        }
+
         getCommand("hns").setExecutor(new CommandManager());
+        getCommand("ejoin").setExecutor(new LobbyJoinCommand());
+        getCommand("eleave").setExecutor(new LobbyExitCommand());
+
+        getServer().getPluginManager().registerEvents(new PlayerQuitListener(), this);
+        getServer().getPluginManager().registerEvents(new HitPlayerListener(), this);
     }
 
     @Override

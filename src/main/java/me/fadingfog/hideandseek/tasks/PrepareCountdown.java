@@ -1,8 +1,10 @@
 package me.fadingfog.hideandseek.tasks;
 
 import me.fadingfog.hideandseek.ConfigStorage;
+import me.fadingfog.hideandseek.game.Arena;
 import me.fadingfog.hideandseek.game.Game;
 import me.fadingfog.hideandseek.game.Lobby;
+import me.fadingfog.hideandseek.placeholder.HnsExpansion;
 import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -10,7 +12,10 @@ import org.bukkit.scheduler.BukkitRunnable;
 public class PrepareCountdown extends BukkitRunnable {
     private final ConfigStorage config = ConfigStorage.getInstance();
     private final Lobby lobby = Lobby.getInstance();
+    private final Arena arena = Arena.getInstance();
     private final Game game = Game.getInstance();
+
+    private final HnsExpansion hnsExpansion = HnsExpansion.getInstance();
     int timer = (int) config.getTimeToStart();
 
     Location lobbyLoc = lobby.getLocation();
@@ -18,7 +23,7 @@ public class PrepareCountdown extends BukkitRunnable {
 
     @Override
     public void run() {
-        lobby.sendLobbyMessage("Game will start in " + timer);
+        arena.sendArenaMessage("Game will start in " + timer);
         if (timer == 0) {
             lobbyLoc.getWorld().playSound(lobbyLoc, Sound.LEVEL_UP, 2, 1);
             cancel();
@@ -27,6 +32,8 @@ public class PrepareCountdown extends BukkitRunnable {
             lobbyLoc.getWorld().playSound(lobbyLoc, Sound.NOTE_PIANO, 2, pitch);
             pitch += 0.33F;
         }
+
         timer--;
+        hnsExpansion.timer = timer;
     }
 }

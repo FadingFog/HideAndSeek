@@ -9,9 +9,34 @@ commands:
   hns:
     description: commands to control this plugin
     usage: |
-      /<command> item - get the name of item in hand
-    permission: hns
+      /<command> lobby set - set a new lobby location
+      /<command> lobby open - open the minigame lobby
+      /<command> lobby close - close the minigame lobby
+      /<command> lobby members - get lobby members
+      -------------------------------------------------
+      /<command> arena set - set new arena location
+      /<command> arena set seekers - set new seekers lobby location
+      /<command> arena members - get arena members
+      /<command> arena seekers - get arena seekers
+      /<command> arena hiders - get arena hiders
+      -------------------------------------------------
+      /<command> game start - start the game
+      /<command> game stop - stop the game
+    permission: hns.*
+  ejoin:
+    description: join the minigame lobby
+    usage: |
+      /<command>
+    permission: hns.lobby.join
+  eleave:
+    description: leave the minigame lobby
+    usage: |
+      /<command>
+    permission: hns.lobby.join
 permissions:
   hns.*:
     default: op
     description: Allows to use hns commands
+  hns.lobby.join:
+    default: true
+    description:  Allows player to join/leave lobby
