@@ -1,6 +1,7 @@
 package me.fadingfog.hideandseek.commands;
 
 import com.earth2me.essentials.User;
+import me.fadingfog.hideandseek.I18n;
 import me.fadingfog.hideandseek.game.Game;
 import me.fadingfog.hideandseek.game.Lobby;
 import org.bukkit.ChatColor;
@@ -33,21 +34,21 @@ public class LobbyJoinCommand implements CommandExecutor {
             if (user.isAuthorized("hns.lobby.join")) {
                 PlayerInventory playerInv = player.getInventory();
                 if (!(isInventoryEmpty(playerInv) && isArmorInventoryEmpty(playerInv))) {
-                    resultMessage = "Sorry, but your inventory is not empty";
+                    resultMessage = I18n.tl("inventoryNotEmpty");
                 } else {
                     if (lobby.addMember(player)) {
-                        resultMessage = "You are joined lobby";
+                        resultMessage = I18n.tl("lobbyJoined");
                     } else if (game.getGameState() != Game.GameState.Closed) {
-                        resultMessage = "Sorry, but the game has already started";
+                        resultMessage = I18n.tl("gameAlreadyStarted");
                     } else if (lobby.getLobbyState() == Lobby.LobbyState.Closed) {
-                        resultMessage = "Sorry, but lobby is closed";
+                        resultMessage = I18n.tl("lobbyClosed");
                     } else {
-                        resultMessage = "You are already in lobby";
+                        resultMessage = I18n.tl("lobbyAlreadyJoined");
                     }
                 }
 
             } else {
-                resultMessage = ChatColor.RED + "Not enough permissions";
+                resultMessage = ChatColor.RED + I18n.tl("notEnoughPermissions");
             }
 
             player.sendMessage(prefix + resultMessage);

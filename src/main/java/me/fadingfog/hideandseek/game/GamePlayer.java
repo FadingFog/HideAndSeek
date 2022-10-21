@@ -4,7 +4,7 @@ import org.bukkit.entity.Player;
 
 public class GamePlayer {
     public enum Role {
-        HIDER("Hider"),
+        HIDER("hider"),
         SEEKER("Seeker");
 
         private final String name;

@@ -1,6 +1,7 @@
 package me.fadingfog.hideandseek.commands;
 
 import com.earth2me.essentials.User;
+import me.fadingfog.hideandseek.I18n;
 import me.fadingfog.hideandseek.game.Arena;
 import me.fadingfog.hideandseek.game.Lobby;
 import me.fadingfog.hideandseek.utils.TeleportUtil;
@@ -27,16 +28,16 @@ public class LobbyExitCommand implements CommandExecutor {
 
             if (user.isAuthorized("hns.lobby.join")) {
                 if (lobby.removeMember(player)) {
-                    resultMessage = "You are leaved lobby";
+                    resultMessage = I18n.tl("lobbyLeaved");
                     TeleportUtil.teleportPlayerBack(player);
                 } else if (arena.removeGamePlayer(player)) {
-                    resultMessage = "You are leaved game";
+                    resultMessage = I18n.tl("gameLeaved");
                     TeleportUtil.teleportPlayerBack(player);
                 } else {
-                    resultMessage = "Sorry, but you're not in game";
+                    resultMessage = I18n.tl("notInGame");
                 }
             } else {
-                resultMessage = ChatColor.RED + "Not enough permissions";
+                resultMessage = ChatColor.RED + I18n.tl("notEnoughPermissions");
             }
 
             player.sendMessage(prefix + resultMessage);

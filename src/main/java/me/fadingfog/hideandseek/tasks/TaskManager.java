@@ -16,6 +16,7 @@ public class TaskManager extends BukkitRunnable {
         switch (game.getGameState()) {
             case Closed:
             case End:
+                game.resetPlayersPrefix();
                 game.returnPlayersToLobby();
                 cancel();
                 cancelAllCountdowns();

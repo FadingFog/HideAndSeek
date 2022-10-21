@@ -1,6 +1,7 @@
 package me.fadingfog.hideandseek.commands;
 
 import me.fadingfog.hideandseek.ConfigStorage;
+import me.fadingfog.hideandseek.I18n;
 import me.fadingfog.hideandseek.game.Arena;
 import me.fadingfog.hideandseek.game.Game;
 import me.fadingfog.hideandseek.game.Lobby;
@@ -30,41 +31,37 @@ public class GameCommand extends SubCommand {
             switch (args[0].toLowerCase()) {
                 case ("start"):
                     if (arena.getLocation() == null || arena.getSeekersLobbyLocation() == null) {
-                        resultMessage = "Arena or seekers lobby location is not set";
+                        resultMessage = I18n.tl("arenaOrSeekersLocNotSet");
                         break;
                     }
                     if (config.getMinNumberOfPlayers() <= config.getNumberOfSeekers()) {
-                        resultMessage = "Minimum number of players cannot be less than the number of seekers";
+                        resultMessage = I18n.tl("gameMinPlayersLessSeekers");
                         break;
                     }
                     if (lobby.getMembers().size() < config.getMinNumberOfPlayers() || lobby.getMembers().size() < config.getNumberOfSeekers() * 2) {
-                        resultMessage = "Not enough players for start game";
+                        resultMessage = I18n.tl("gameNotEnoughPlayers");
                         break;
                     }
                     game.start();
-                    resultMessage = "Game started";
+                    resultMessage = I18n.tl("gameStarted");
 
                     break;
                 case ("stop"):
                     if (game.stop()) {
-                        resultMessage = "Game stopped";
+                        resultMessage = I18n.tl("gameStopped");
                     } else {
-                        resultMessage = "Game hasn't started yet";
+                        resultMessage = I18n.tl("gameNotStarted");
                     }
 
                     break;
                 case ("test"):
-//                    ScoreboardManager manager = getServer().getScoreboardManager();
-//                    Scoreboard board = manager.getMainScoreboard();
-//                    Team team = board.getTeam("Aboba");
-//                    team.setPrefix("Ebobo");
 
                     break;
                 default:
-                    resultMessage = "Command not found";
+                    resultMessage = I18n.tl("commandNotFound");
                     break;
             }
-        } else resultMessage = "Command not found";
+        } else resultMessage = I18n.tl("commandNotFound");
 
     }
 

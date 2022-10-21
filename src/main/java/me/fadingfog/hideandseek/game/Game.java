@@ -2,7 +2,11 @@ package me.fadingfog.hideandseek.game;
 
 import me.fadingfog.hideandseek.ConfigStorage;
 import me.fadingfog.hideandseek.HideAndSeek;
+import me.fadingfog.hideandseek.I18n;
 import me.fadingfog.hideandseek.tasks.TaskManager;
+import me.neznamy.tab.api.TabAPI;
+import me.neznamy.tab.api.TabPlayer;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
@@ -31,6 +35,7 @@ public class Game {
     private static Game instance;
     private final HideAndSeek plugin = HideAndSeek.getInstance();
     private final ConfigStorage config = ConfigStorage.getInstance();
+    private final TabAPI tabAPI = TabAPI.getInstance();
     private final Lobby lobby = Lobby.getInstance();
     private final Arena arena = Arena.getInstance();
 
@@ -93,13 +98,20 @@ public class Game {
             int randomIndex = random.nextInt(hiders.size());
             Player seeker = hiders.get(randomIndex);
             GamePlayer gPlayer = new GamePlayer(GamePlayer.Role.SEEKER, seeker);
+
             arena.addGamePlayer(gPlayer);
             hiders.remove(randomIndex);
+
+            TabPlayer tabPlayer = tabAPI.getPlayer(seeker.getName());
+            tabAPI.getTeamManager().setPrefix(tabPlayer, ChatColor.DARK_RED + I18n.tl("seeker"));
         }
 
         for (Player hider : hiders) {
             GamePlayer gPlayer = new GamePlayer(GamePlayer.Role.HIDER, hider);
             arena.addGamePlayer(gPlayer);
+
+            TabPlayer tabPlayer = tabAPI.getPlayer(hider.getName());
+            tabAPI.getTeamManager().setPrefix(tabPlayer, ChatColor.DARK_GREEN + I18n.tl("hider"));
         }
     }
 
@@ -114,5 +126,12 @@ public class Game {
         lobby.addMembers(arena.getPlayers());
         teleportPlayers(arena.getGamePlayers(), lobby.getLocation());
         arena.clearGamePlayers();
+    }
+
+    public void resetPlayersPrefix() {
+        for (Player player : arena.getPlayers()) {
+            TabPlayer tabPlayer = tabAPI.getPlayer(player.getName());
+            tabAPI.getTeamManager().resetPrefix(tabPlayer);
+        }
     }
 }

@@ -56,12 +56,17 @@ public class ConfigStorage {
     }
 
     public void loadDefaults() {
+        config.addDefault("locale", "en");
         config.addDefault("number-of-seekers", 3);
         config.addDefault("min-players", 6);
         config.addDefault("time-to-start", "10S");
         config.addDefault("time-to-hide", "10M");
         config.addDefault("time-to-seek", "20M");
         config.options().copyDefaults(true);
+    }
+
+    public String getLocale() {
+        return config.getString("locale");
     }
 
     public Location getLocation(String path) {

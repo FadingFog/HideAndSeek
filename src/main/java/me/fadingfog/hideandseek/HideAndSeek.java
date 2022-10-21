@@ -15,6 +15,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 public final class HideAndSeek extends JavaPlugin {
     private static HideAndSeek instance;
     private final ConfigStorage configStorage = new ConfigStorage(this);
+    private transient I18n i18n;
 
     public static HideAndSeek getInstance() {
         return HideAndSeek.instance;
@@ -23,6 +24,8 @@ public final class HideAndSeek extends JavaPlugin {
     @Override
     public void onEnable() {
         instance = this;
+        this.i18n = new I18n(this);
+        this.i18n.onEnable();
         setupParts();
 
         getConfig().options().copyDefaults();
@@ -46,11 +49,19 @@ public final class HideAndSeek extends JavaPlugin {
 
         getServer().getPluginManager().registerEvents(new PlayerQuitListener(), this);
         getServer().getPluginManager().registerEvents(new HitPlayerListener(), this);
+
+        this.i18n.updateLocale(configStorage.getLocale());
     }
 
     @Override
     public void onDisable() {
+        if (i18n != null) {
+            i18n.onDisable();
+        }
+    }
 
+    public I18n getI18n() {
+        return i18n;
     }
 
     public void setupParts() {
