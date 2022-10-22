@@ -26,10 +26,10 @@ public class I18n {
         }
     };
     private static I18n instance;
-    private final transient Locale defaultLocale = Locale.getDefault();
+    private final static Locale defaultLocale = Locale.getDefault();
     private final transient ResourceBundle defaultBundle;
     private final transient HideAndSeek plugin;
-    private transient Locale currentLocale = defaultLocale;
+    private static Locale currentLocale = defaultLocale;
     private transient ResourceBundle customBundle;
     private transient ResourceBundle localeBundle;
     private transient Map<String, MessageFormat> messageFormatCache = new HashMap<>();
@@ -61,7 +61,7 @@ public class I18n {
         instance = null;
     }
 
-    public Locale getCurrentLocale() {
+    public static Locale getCurrentLocale() {
         return currentLocale;
     }
 
@@ -87,13 +87,17 @@ public class I18n {
             try {
                 messageFormat = new MessageFormat(format);
             } catch (final IllegalArgumentException e) {
-                plugin.getLogger().log(Level.SEVERE, "Invalid Translation key for '" + string + "': " + e.getMessage());
+                plugin.getLogger().severe("Invalid Translation key for '" + string + "': " + e.getMessage());
                 format = format.replaceAll("\\{(\\D*?)}", "\\[$1\\]");
                 messageFormat = new MessageFormat(format);
             }
             messageFormatCache.put(format, messageFormat);
         }
         return messageFormat.format(objects).replace(' ', ' '); // replace nbsp with a space
+    }
+
+    public static String formatPlural(final String pattern, final Object... objects) {
+        return new com.ibm.icu.text.MessageFormat(pattern, getCurrentLocale()).format(objects);
     }
 
     public void updateLocale(final String loc) {

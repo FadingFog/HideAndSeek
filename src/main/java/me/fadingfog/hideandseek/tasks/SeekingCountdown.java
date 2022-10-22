@@ -20,14 +20,14 @@ public class SeekingCountdown extends BukkitRunnable {
     public void run() {
         if (timer == init_timer) {
             game.teleportPlayers(arena.getSeekers(), arena.getLocation());
-            arena.sendArenaMessage("It's time to " + ChatColor.RED  + " seek!");
+            arena.sendArenaMessage("It's time to " + ChatColor.RED  + "seek!");
 
             arena.sendArenaMessage(ConfigStorage.formatDuration(timer) + " left in the game");
         } else if (timer == 0) {
             arena.sendArenaMessage("Game over. Time's up");
             game.setGameState(Game.GameState.End);
             cancel();
-        } else if (timer == init_timer / 2 || timer == 5 * 60 || timer == 3 * 60 || timer == 60 || timer == 5 || timer <= 5) {
+        } else if (timer == init_timer / 2 || timer == 5 * 60 || timer == 3 * 60 || timer == 60 || timer <= 5) {
             arena.sendArenaMessage(ConfigStorage.formatDuration(timer) + " left in the game");
         }
 

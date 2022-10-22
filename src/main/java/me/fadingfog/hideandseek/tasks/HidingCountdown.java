@@ -1,6 +1,7 @@
 package me.fadingfog.hideandseek.tasks;
 
 import me.fadingfog.hideandseek.ConfigStorage;
+import me.fadingfog.hideandseek.I18n;
 import me.fadingfog.hideandseek.game.Arena;
 import me.fadingfog.hideandseek.game.Game;
 import me.fadingfog.hideandseek.placeholder.HnsExpansion;
@@ -20,14 +21,14 @@ public class HidingCountdown extends BukkitRunnable {
     public void run() {
         if (timer == init_timer) {
             game.teleportPlayers(arena.getSeekers(), arena.getSeekersLobbyLocation());
-            arena.sendSeekersMessage("You are " + ChatColor.RED + "Seeker");
+            arena.sendSeekersMessage(I18n.tl("youAreSeeker", ChatColor.RED));
             game.teleportPlayers(arena.getHiders(), arena.getLocation());
-            arena.sendHidersMessage("You are " + ChatColor.DARK_GREEN + "Hider");
+            arena.sendHidersMessage(I18n.tl("youAreHider", ChatColor.DARK_GREEN));
 
-            arena.sendArenaMessage("Hiders have " + ConfigStorage.formatDuration(timer) + " to hide");
+            arena.sendArenaMessage(I18n.tl("timerHide", ConfigStorage.formatDuration(timer)));
 
         } else if (timer == init_timer / 2 || timer == 30) {
-            arena.sendArenaMessage("Hiders have " + ConfigStorage.formatDuration(timer) + " left to hide");
+            arena.sendArenaMessage(I18n.tl("timerHideLeft", ConfigStorage.formatDuration(timer)));
 
         } else if (timer == 0) {
             game.setGameState(Game.GameState.Seeking);

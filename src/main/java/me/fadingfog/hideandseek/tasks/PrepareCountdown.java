@@ -1,6 +1,7 @@
 package me.fadingfog.hideandseek.tasks;
 
 import me.fadingfog.hideandseek.ConfigStorage;
+import me.fadingfog.hideandseek.I18n;
 import me.fadingfog.hideandseek.game.Arena;
 import me.fadingfog.hideandseek.game.Game;
 import me.fadingfog.hideandseek.game.Lobby;
@@ -23,7 +24,7 @@ public class PrepareCountdown extends BukkitRunnable {
 
     @Override
     public void run() {
-        arena.sendArenaMessage("Game will start in " + timer);
+        arena.sendArenaMessage(I18n.tl("timerGameStart", timer));
         if (timer == 0) {
             lobbyLoc.getWorld().playSound(lobbyLoc, Sound.LEVEL_UP, 2, 1);
             cancel();

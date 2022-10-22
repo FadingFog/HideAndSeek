@@ -1,5 +1,6 @@
 package me.fadingfog.hideandseek.listeners;
 
+import me.fadingfog.hideandseek.I18n;
 import me.fadingfog.hideandseek.game.Arena;
 import me.fadingfog.hideandseek.game.Game;
 import me.fadingfog.hideandseek.game.GamePlayer;
@@ -9,13 +10,14 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
-import java.text.MessageFormat;
-
 import static me.fadingfog.hideandseek.commands.CommandManager.prefix;
 
 public class HitPlayerListener implements Listener {
     private final Arena arena = Arena.getInstance();
     private final Game game = Game.getInstance();
+    String message;
+    String seekerMessage;
+    String hiderMessage;
 
     @EventHandler
     public void onHit(EntityDamageByEntityEvent ev) {
@@ -44,16 +46,18 @@ public class HitPlayerListener implements Listener {
                             hiderLoc.subtract(nx, 0, nz);
                         }
 
-                        String message = ChatColor.AQUA + MessageFormat.format("{0} поймал {1}", seeker.getDisplayName(), hider.getDisplayName());
+                        message = ChatColor.AQUA + I18n.tl("seekerCaughtHider", seeker.getDisplayName(), hider.getDisplayName());
+                        seekerMessage = prefix + ChatColor.AQUA + I18n.tl("seekerCaught", hider.getDisplayName());
+                        hiderMessage = prefix + ChatColor.AQUA + I18n.tl("hiderCaught");
 
-                        seeker.sendMessage(prefix + ChatColor.AQUA + "Вы поймали " + hider.getDisplayName());
-                        arena.sendArenaMessage(prefix + message);
+                        seeker.sendMessage(seekerMessage);
+                        arena.sendArenaMessage(message);
 
                         gSeeker.setScore(gSeeker.getScore() + 1);
 
                         hider.teleport(arena.getLocation());
                         gHider.setRole(GamePlayer.Role.SEEKER);
-                        hider.sendMessage(prefix + ChatColor.AQUA + "Вас поймали. Теперь вы охотник");
+                        hider.sendMessage(hiderMessage);
                     }
                 }
             }

@@ -1,20 +1,28 @@
 package me.fadingfog.hideandseek.game;
 
+import me.fadingfog.hideandseek.I18n;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 public class GamePlayer {
     public enum Role {
-        HIDER("hider"),
-        SEEKER("Seeker");
+        HIDER("Hider", ChatColor.DARK_GRAY + "[" + ChatColor.DARK_GREEN + I18n.tl("hider") + ChatColor.DARK_GRAY + "] " + ChatColor.RED),
+        SEEKER("Seeker", ChatColor.DARK_GRAY + "[" + ChatColor.RED + I18n.tl("seeker") + ChatColor.DARK_GRAY + "] " + ChatColor.RED);
 
         private final String name;
+        private final String prefix;
 
-        Role(String name) {
+        Role(String name, String prefix) {
             this.name = name;
+            this.prefix = prefix;
         }
 
         public String getName() {
             return name;
+        }
+
+        public String getPrefix() {
+            return prefix;
         }
     }
 

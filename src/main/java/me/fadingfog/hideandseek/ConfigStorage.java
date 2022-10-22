@@ -14,7 +14,6 @@ import java.util.regex.Pattern;
 
 @SuppressWarnings({"unchecked", "DuplicatedCode"})
 public class ConfigStorage {
-
     private final HideAndSeek plugin;
     private static ConfigStorage instance;
     private static File configFile;
@@ -168,16 +167,22 @@ public class ConfigStorage {
     }
 
     public static String formatDuration(int totalSeconds) {
+
         Duration d = Duration.parse("PT" + totalSeconds + "S");
         long hours = d.toHours();
         d = d.minusHours(hours);
         long minutes = d.toMinutes();
         d = d.minusMinutes(minutes);
         long seconds = d.getSeconds();
+
+        String hoursPattern = I18n.tl("hoursPattern");
+        String minutesPattern = I18n.tl("minutesPattern");
+        String secondsPattern = I18n.tl("secondsPattern");
+
         return
-                (hours == 0 ? "" : hours + " hour") +
-                (minutes ==  0 ? "" : minutes + " minutes") +
-                (seconds == 0 ? "" : seconds + " seconds");
+                (hours == 0 ? "" :  I18n.formatPlural(hoursPattern, hours) + " ") +
+                (minutes ==  0 ? "" : I18n.formatPlural(minutesPattern, minutes) + " ") +
+                (seconds == 0 ? "" : I18n.formatPlural(secondsPattern, seconds));
     }
 
     public static String formatDurationDigits(int totalSeconds) {

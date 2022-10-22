@@ -1,5 +1,6 @@
 package me.fadingfog.hideandseek.listeners;
 
+import me.fadingfog.hideandseek.I18n;
 import me.fadingfog.hideandseek.game.Arena;
 import me.fadingfog.hideandseek.game.Lobby;
 import me.fadingfog.hideandseek.utils.TeleportUtil;
@@ -20,13 +21,19 @@ public class PlayerQuitListener implements Listener {
         World world = player.getWorld();
 
         if (world == lobby.getLocation().getWorld() || world == arena.getLocation().getWorld()) {
-            lobby.removeMember(player);
-            arena.removeGamePlayer(player);
-            for (Player p : world.getPlayers()) {
-                p.sendMessage(player.getDisplayName() + " left the game");
+            if (lobby.removeMember(player)) {
+                for (Player p : world.getPlayers()) {
+                    p.sendMessage(I18n.tl("leftTheLobby", player.getDisplayName()));
+                }
+                TeleportUtil.teleportPlayerBack(player);
             }
-            TeleportUtil.teleportPlayerBack(player);
+            if (arena.removeGamePlayer(player)) {
+                for (Player p : world.getPlayers()) {
+                    p.sendMessage(I18n.tl("leftTheGame", player.getDisplayName()));
+                }
+                TeleportUtil.teleportPlayerBack(player);
+            }
         }
-    }
 
+    }
 }

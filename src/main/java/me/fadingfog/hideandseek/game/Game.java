@@ -2,11 +2,9 @@ package me.fadingfog.hideandseek.game;
 
 import me.fadingfog.hideandseek.ConfigStorage;
 import me.fadingfog.hideandseek.HideAndSeek;
-import me.fadingfog.hideandseek.I18n;
 import me.fadingfog.hideandseek.tasks.TaskManager;
 import me.neznamy.tab.api.TabAPI;
 import me.neznamy.tab.api.TabPlayer;
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
@@ -103,7 +101,7 @@ public class Game {
             hiders.remove(randomIndex);
 
             TabPlayer tabPlayer = tabAPI.getPlayer(seeker.getName());
-            tabAPI.getTeamManager().setPrefix(tabPlayer, ChatColor.DARK_RED + I18n.tl("seeker"));
+            tabAPI.getTeamManager().setPrefix(tabPlayer, gPlayer.getRole().getPrefix());
         }
 
         for (Player hider : hiders) {
@@ -111,7 +109,7 @@ public class Game {
             arena.addGamePlayer(gPlayer);
 
             TabPlayer tabPlayer = tabAPI.getPlayer(hider.getName());
-            tabAPI.getTeamManager().setPrefix(tabPlayer, ChatColor.DARK_GREEN + I18n.tl("hider"));
+            tabAPI.getTeamManager().setPrefix(tabPlayer, gPlayer.getRole().getPrefix());
         }
     }
 
