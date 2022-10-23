@@ -4,8 +4,12 @@ import me.fadingfog.hideandseek.ConfigStorage;
 import me.fadingfog.hideandseek.I18n;
 import me.fadingfog.hideandseek.game.Arena;
 import me.fadingfog.hideandseek.game.Game;
+import me.fadingfog.hideandseek.game.GamePlayer;
 import me.fadingfog.hideandseek.game.Lobby;
+import me.neznamy.tab.api.TabAPI;
+import me.neznamy.tab.api.TabPlayer;
 import org.bukkit.entity.Player;
+
 
 public class GameCommand extends SubCommand {
     private String resultMessage;
@@ -49,12 +53,22 @@ public class GameCommand extends SubCommand {
                 case ("stop"):
                     if (game.stop()) {
                         resultMessage = I18n.tl("gameStopped");
+                        lobby.sendLobbyMessage(I18n.tl("gameStoppedEarly"));
                     } else {
                         resultMessage = I18n.tl("gameNotStarted");
                     }
 
                     break;
                 case ("test"):
+                    TabAPI tabAPI = TabAPI.getInstance();
+                    TabPlayer tabPlayer = tabAPI.getPlayer(player.getName());
+                    tabAPI.getTeamManager().setPrefix(tabPlayer, GamePlayer.Role.SEEKER.getPrefix());
+
+                    break;
+                case ("test2"):
+                    tabAPI = TabAPI.getInstance();
+                    tabPlayer = tabAPI.getPlayer(player.getName());
+                    tabAPI.getTeamManager().setPrefix(tabPlayer, GamePlayer.Role.HIDER.getPrefix());
 
                     break;
                 default:

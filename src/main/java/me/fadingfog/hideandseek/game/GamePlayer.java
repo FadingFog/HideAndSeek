@@ -6,8 +6,11 @@ import org.bukkit.entity.Player;
 
 public class GamePlayer {
     public enum Role {
-        HIDER("Hider", ChatColor.DARK_GRAY + "[" + ChatColor.DARK_GREEN + I18n.tl("hider") + ChatColor.DARK_GRAY + "] " + ChatColor.RED),
-        SEEKER("Seeker", ChatColor.DARK_GRAY + "[" + ChatColor.RED + I18n.tl("seeker") + ChatColor.DARK_GRAY + "] " + ChatColor.RED);
+//        HIDER("Hider", ChatColor.DARK_GREEN + "[" + I18n.tl("hider") + "] " + ChatColor.WHITE),
+//        SEEKER("Seeker", ChatColor.RED + "[" + I18n.tl("seeker") + "] " + ChatColor.WHITE);
+
+        HIDER("Hider", ChatColor.DARK_GRAY + "[" + ChatColor.DARK_GREEN + I18n.tl("hider") + ChatColor.DARK_GRAY + "] " + ChatColor.WHITE),
+        SEEKER("Seeker", ChatColor.DARK_GRAY + "[" + ChatColor.RED + I18n.tl("seeker") + ChatColor.DARK_GRAY + "] " + ChatColor.WHITE);
 
         private final String name;
         private final String prefix;
@@ -29,6 +32,10 @@ public class GamePlayer {
     private Role role;
     private Player player;
     private int score = 0;
+    private int initTimeAsHider;
+    private int initTimeAsSeeker;
+    private int totalTimeAsHider;
+    private int totalTimeAsSeeker;
 
     public GamePlayer(Role role, Player player) {
         this.role = role;
@@ -61,5 +68,29 @@ public class GamePlayer {
 
     public String getName() {
         return player.getDisplayName();
+    }
+
+    public void setInitTimeAsHider() {
+        this.initTimeAsHider = (int) System.currentTimeMillis();
+    }
+
+    public void setInitTimeAsSeeker() {
+        this.initTimeAsSeeker = (int) System.currentTimeMillis();
+    }
+
+    public int getTotalTimeAsHider() {
+        return totalTimeAsHider;
+    }
+
+    public void setTotalTimeAsHider() {
+        this.totalTimeAsHider = (int) ((System.currentTimeMillis() - initTimeAsHider) / 1000);
+    }
+
+    public int getTotalTimeAsSeeker() {
+        return totalTimeAsSeeker;
+    }
+
+    public void setTotalTimeAsSeeker() {
+        this.totalTimeAsSeeker = (int) ((System.currentTimeMillis() - initTimeAsSeeker) / 1000);
     }
 }

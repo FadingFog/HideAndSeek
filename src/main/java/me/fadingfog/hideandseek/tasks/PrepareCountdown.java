@@ -10,6 +10,8 @@ import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import static me.fadingfog.hideandseek.commands.CommandManager.SECONDARY_COLOR;
+
 public class PrepareCountdown extends BukkitRunnable {
     private final ConfigStorage config = ConfigStorage.getInstance();
     private final Lobby lobby = Lobby.getInstance();
@@ -24,7 +26,7 @@ public class PrepareCountdown extends BukkitRunnable {
 
     @Override
     public void run() {
-        arena.sendArenaMessage(I18n.tl("timerGameStart", timer));
+        arena.sendArenaMessage(I18n.tl("timerGameStart", SECONDARY_COLOR.toString() + timer));
         if (timer == 0) {
             lobbyLoc.getWorld().playSound(lobbyLoc, Sound.LEVEL_UP, 2, 1);
             cancel();

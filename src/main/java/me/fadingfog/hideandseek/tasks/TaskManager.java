@@ -7,7 +7,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 public class TaskManager extends BukkitRunnable {
     private final HideAndSeek plugin = HideAndSeek.getInstance();
     private final Game game = Game.getInstance();
-    public PrepareCountdown prepareCountdown = null;
+    private PrepareCountdown prepareCountdown = null;
     private HidingCountdown hidingCountdown = null;
     private SeekingCountdown seekingCountdown = null;
 

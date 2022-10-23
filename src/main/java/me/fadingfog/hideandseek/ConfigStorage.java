@@ -1,5 +1,6 @@
 package me.fadingfog.hideandseek;
 
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -10,7 +11,10 @@ import java.io.File;
 import java.io.IOException;
 import java.time.Duration;
 import java.util.HashMap;
+import java.util.List;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @SuppressWarnings({"unchecked", "DuplicatedCode"})
 public class ConfigStorage {
@@ -166,32 +170,34 @@ public class ConfigStorage {
         return Pattern.matches("^(\\d{1,2}[HhMmSs])*$", dur);
     }
 
-    public static String formatDuration(int totalSeconds) {
+    public static String formatDuration(final int totalSeconds) {
 
         Duration d = Duration.parse("PT" + totalSeconds + "S");
-        long hours = d.toHours();
-        d = d.minusHours(hours);
-        long minutes = d.toMinutes();
-        d = d.minusMinutes(minutes);
-        long seconds = d.getSeconds();
+        final long h = d.toHours();
+        d = d.minusHours(h);
+        final long m = d.toMinutes();
+        d = d.minusMinutes(m);
+        final long s = d.getSeconds();
 
-        String hoursPattern = I18n.tl("hoursPattern");
-        String minutesPattern = I18n.tl("minutesPattern");
-        String secondsPattern = I18n.tl("secondsPattern");
+        final String hoursPattern = I18n.tl("hoursPattern");
+        final String minutesPattern = I18n.tl("minutesPattern");
+        final String secondsPattern = I18n.tl("secondsPattern");
 
-        return
-                (hours == 0 ? "" :  I18n.formatPlural(hoursPattern, hours) + " ") +
-                (minutes ==  0 ? "" : I18n.formatPlural(minutesPattern, minutes) + " ") +
-                (seconds == 0 ? "" : I18n.formatPlural(secondsPattern, seconds));
+        final String hours = (h == 0) ? "" :  I18n.formatPlural(hoursPattern, h);
+        final String minutes = (m ==  0) ? "" : I18n.formatPlural(minutesPattern, m);
+        final String seconds = (s == 0) ? "" : I18n.formatPlural(secondsPattern, s);
+
+        List<String> time = Stream.of(hours, minutes, seconds).filter(i -> !i.isEmpty()).collect(Collectors.toList());
+        return StringUtils.join(time, " ");
     }
 
-    public static String formatDurationDigits(int totalSeconds) {
+    public static String formatDurationDigits(final int totalSeconds) {
         Duration d = Duration.parse("PT" + totalSeconds + "S");
-        long hours = d.toHours();
+        final long hours = d.toHours();
         d = d.minusHours(hours);
-        long minutes = d.toMinutes();
+        final long minutes = d.toMinutes();
         d = d.minusMinutes(minutes);
-        long seconds = d.getSeconds();
+        final long seconds = d.getSeconds();
         if (hours != 0) {
             return String.format("%02d:%02d:%02d", hours, minutes, seconds);
         } else {

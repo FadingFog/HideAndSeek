@@ -16,6 +16,7 @@ public final class HideAndSeek extends JavaPlugin {
     private static HideAndSeek instance;
     private final ConfigStorage configStorage = new ConfigStorage(this);
     private transient I18n i18n;
+    private Game game;
 
     public static HideAndSeek getInstance() {
         return HideAndSeek.instance;
@@ -55,6 +56,7 @@ public final class HideAndSeek extends JavaPlugin {
 
     @Override
     public void onDisable() {
+        game.forceStop();
         if (i18n != null) {
             i18n.onDisable();
         }
@@ -74,7 +76,7 @@ public final class HideAndSeek extends JavaPlugin {
         final Arena arena = new Arena();
         arena.setup();
 
-        final Game game = new Game();
+        game = new Game();
         game.setup();
     }
 }

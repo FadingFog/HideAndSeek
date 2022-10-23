@@ -46,14 +46,17 @@ public class HitPlayerListener implements Listener {
                             hiderLoc.subtract(nx, 0, nz);
                         }
 
-                        message = ChatColor.AQUA + I18n.tl("seekerCaughtHider", seeker.getDisplayName(), hider.getDisplayName());
-                        seekerMessage = prefix + ChatColor.AQUA + I18n.tl("seekerCaught", hider.getDisplayName());
-                        hiderMessage = prefix + ChatColor.AQUA + I18n.tl("hiderCaught");
+                        message = I18n.tl("seekerCaughtHider", seeker.getName(), hider.getName());
+                        seekerMessage = prefix + ChatColor.DARK_AQUA + I18n.tl("seekerCaught", hider.getDisplayName());
+                        hiderMessage = prefix + ChatColor.DARK_AQUA + I18n.tl("hiderCaught", ChatColor.RED);
 
                         seeker.sendMessage(seekerMessage);
                         arena.sendArenaMessage(message);
 
                         gSeeker.setScore(gSeeker.getScore() + 1);
+
+                        gHider.setTotalTimeAsHider();
+                        gHider.setInitTimeAsSeeker();
 
                         hider.teleport(arena.getLocation());
                         gHider.setRole(GamePlayer.Role.SEEKER);

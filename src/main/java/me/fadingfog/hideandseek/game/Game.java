@@ -3,6 +3,7 @@ package me.fadingfog.hideandseek.game;
 import me.fadingfog.hideandseek.ConfigStorage;
 import me.fadingfog.hideandseek.HideAndSeek;
 import me.fadingfog.hideandseek.tasks.TaskManager;
+import me.fadingfog.hideandseek.utils.TeleportUtil;
 import me.neznamy.tab.api.TabAPI;
 import me.neznamy.tab.api.TabPlayer;
 import org.bukkit.Location;
@@ -38,7 +39,7 @@ public class Game {
     private final Arena arena = Arena.getInstance();
 
     private GameState gameState = GameState.Closed;
-
+    private final TaskManager taskManager = new TaskManager();
 
     public static Game getInstance() {
         return instance;
@@ -65,7 +66,6 @@ public class Game {
 
         setGameState(GameState.Preparing);
 
-        TaskManager taskManager = new TaskManager();
         taskManager.runTaskTimer(plugin, 20L, 10L);
     }
 
@@ -75,6 +75,26 @@ public class Game {
             return true;
         } else {
             return false;
+        }
+    }
+
+    public void forceStop() {
+        List<Player> lobbyMembers = lobby.getMembers();
+
+        if (getGameState() != Game.GameState.Closed) {
+            this.stop();
+
+            for (Player player : lobbyMembers) {
+                TeleportUtil.teleportPlayerBack(player);
+            }
+            for (Player player : arena.getPlayers()) {
+                TeleportUtil.teleportPlayerBack(player);
+            }
+        }
+        if (lobbyMembers.size() > 0) {
+            for (Player player : lobbyMembers) {
+                TeleportUtil.teleportPlayerBack(player);
+            }
         }
     }
 

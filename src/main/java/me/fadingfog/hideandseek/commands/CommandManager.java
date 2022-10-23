@@ -15,7 +15,9 @@ import static org.bukkit.Bukkit.getServer;
 public class CommandManager implements CommandExecutor {
     private final ArrayList<SubCommand> subCommands = new ArrayList<>();
     public final static Essentials ess = (Essentials) getServer().getPluginManager().getPlugin("Essentials");
-    public static final String prefix = ChatColor.DARK_GRAY + "[" + ChatColor.GREEN + "Event" + ChatColor.DARK_GRAY + "] " + ChatColor.GRAY;
+    public static final ChatColor MAIN_COLOR = ChatColor.AQUA;
+    public static final ChatColor SECONDARY_COLOR = ChatColor.GREEN;
+    public static final String prefix = ChatColor.DARK_GRAY + "[" + ChatColor.GREEN + "Event" + ChatColor.DARK_GRAY + "] " + MAIN_COLOR;
 
     public CommandManager() {
         subCommands.add(new LobbyCommand());
