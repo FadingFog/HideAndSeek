@@ -46,7 +46,7 @@ public class HitPlayerListener implements Listener {
                             hiderLoc.subtract(nx, 0, nz);
                         }
 
-                        message = I18n.tl("seekerCaughtHider", seeker.getName(), hider.getName());
+                        message = I18n.tl("seekerCaughtHider", ChatColor.RED, seeker.getName(), ChatColor.DARK_GREEN, hider.getName());
                         seekerMessage = prefix + ChatColor.DARK_AQUA + I18n.tl("seekerCaught", hider.getDisplayName());
                         hiderMessage = prefix + ChatColor.DARK_AQUA + I18n.tl("hiderCaught", ChatColor.RED);
 

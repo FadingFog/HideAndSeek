@@ -6,11 +6,11 @@ import org.bukkit.entity.Player;
 
 public class GamePlayer {
     public enum Role {
-//        HIDER("Hider", ChatColor.DARK_GREEN + "[" + I18n.tl("hider") + "] " + ChatColor.WHITE),
-//        SEEKER("Seeker", ChatColor.RED + "[" + I18n.tl("seeker") + "] " + ChatColor.WHITE);
+        HIDER("Hider", ChatColor.DARK_GREEN + "[" + I18n.tl("hider") + "] " + ChatColor.WHITE),
+        SEEKER("Seeker", ChatColor.RED + "[" + I18n.tl("seeker") + "] " + ChatColor.WHITE);
 
-        HIDER("Hider", ChatColor.DARK_GRAY + "[" + ChatColor.DARK_GREEN + I18n.tl("hider") + ChatColor.DARK_GRAY + "] " + ChatColor.WHITE),
-        SEEKER("Seeker", ChatColor.DARK_GRAY + "[" + ChatColor.RED + I18n.tl("seeker") + ChatColor.DARK_GRAY + "] " + ChatColor.WHITE);
+//        HIDER("Hider", ChatColor.DARK_GRAY + "[" + ChatColor.DARK_GREEN + I18n.tl("hider") + ChatColor.DARK_GRAY + "] " + ChatColor.WHITE),
+//        SEEKER("Seeker", ChatColor.DARK_GRAY + "[" + ChatColor.RED + I18n.tl("seeker") + ChatColor.DARK_GRAY + "] " + ChatColor.WHITE);
 
         private final String name;
         private final String prefix;
@@ -32,10 +32,10 @@ public class GamePlayer {
     private Role role;
     private Player player;
     private int score = 0;
-    private int initTimeAsHider;
-    private int initTimeAsSeeker;
-    private int totalTimeAsHider;
-    private int totalTimeAsSeeker;
+    private long initTimeAsHider;
+    private long initTimeAsSeeker;
+    private int totalTimeAsHider = 0;
+    private int totalTimeAsSeeker = 0;
 
     public GamePlayer(Role role, Player player) {
         this.role = role;
@@ -71,11 +71,11 @@ public class GamePlayer {
     }
 
     public void setInitTimeAsHider() {
-        this.initTimeAsHider = (int) System.currentTimeMillis();
+        this.initTimeAsHider = System.currentTimeMillis();
     }
 
     public void setInitTimeAsSeeker() {
-        this.initTimeAsSeeker = (int) System.currentTimeMillis();
+        this.initTimeAsSeeker = System.currentTimeMillis();
     }
 
     public int getTotalTimeAsHider() {
@@ -83,7 +83,7 @@ public class GamePlayer {
     }
 
     public void setTotalTimeAsHider() {
-        this.totalTimeAsHider = (int) ((System.currentTimeMillis() - initTimeAsHider) / 1000);
+        this.totalTimeAsHider = (int) ((System.currentTimeMillis() - this.initTimeAsHider) / 1000);
     }
 
     public int getTotalTimeAsSeeker() {
@@ -91,6 +91,6 @@ public class GamePlayer {
     }
 
     public void setTotalTimeAsSeeker() {
-        this.totalTimeAsSeeker = (int) ((System.currentTimeMillis() - initTimeAsSeeker) / 1000);
+        this.totalTimeAsSeeker = (int) ((System.currentTimeMillis() - this.initTimeAsSeeker) / 1000);
     }
 }

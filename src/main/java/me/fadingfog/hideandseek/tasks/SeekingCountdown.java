@@ -9,6 +9,9 @@ import me.fadingfog.hideandseek.placeholder.HnsExpansion;
 import org.bukkit.ChatColor;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 import static me.fadingfog.hideandseek.commands.CommandManager.SECONDARY_COLOR;
 
 public class SeekingCountdown extends BukkitRunnable {
@@ -64,6 +67,32 @@ public class SeekingCountdown extends BukkitRunnable {
                 gPlayer.setTotalTimeAsHider();
             }
         }
+
+        LinkedHashMap<GamePlayer, Integer> topSeekers = arena.getTopSeekers(5);
+        LinkedHashMap<GamePlayer, Integer> topHiders = arena.getTopHiders(5);
+
+        arena.sendArenaMessage("----------------------");
+        arena.sendArenaMessage("Топ игроков по количеству пойманных жертв:");
+        arena.sendArenaMessage("----------------------");
+        for (Map.Entry<GamePlayer, Integer> entry : topSeekers.entrySet()) {
+            GamePlayer gPlayer = entry.getKey();
+            int score = entry.getValue();
+            arena.sendArenaMessage(gPlayer.getName() + " - " + score);
+        }
+
+        arena.sendArenaMessage("----------------------");
+        arena.sendArenaMessage("Топ игроков по времени жизни:");
+        arena.sendArenaMessage("----------------------");
+        for (Map.Entry<GamePlayer, Integer> entry : topHiders.entrySet()) {
+            GamePlayer gPlayer = entry.getKey();
+            int totalTimeAsHider = entry.getValue();
+
+            arena.sendArenaMessage(gPlayer.getName() + " - " +
+                    (totalTimeAsHider > 0 ? ConfigStorage.formatDuration(totalTimeAsHider)  : I18n.tl("seeker")));
+        }
+
+        arena.sendArenaMessage("----------------------");
+
 
         game.setGameState(Game.GameState.End);
         cancel();

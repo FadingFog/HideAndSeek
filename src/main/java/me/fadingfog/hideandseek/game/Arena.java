@@ -4,12 +4,12 @@ import me.fadingfog.hideandseek.ConfigStorage;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static me.fadingfog.hideandseek.commands.CommandManager.prefix;
 
+@SuppressWarnings("DuplicatedCode")
 public class Arena {
     private static Arena instance;
     private final ConfigStorage config = ConfigStorage.getInstance();
@@ -113,4 +113,59 @@ public class Arena {
         }
     }
 
+    public LinkedHashMap<GamePlayer, Integer> getTopSeekers(int total) {
+        LinkedHashMap<GamePlayer, Integer> sortedSeekers = getGamePlayers().stream().collect(Collectors.toMap(gPlayer -> gPlayer, GamePlayer::getScore)).entrySet().stream()
+                .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (a, b) -> b, LinkedHashMap::new));
+
+        LinkedHashMap<GamePlayer, Integer> topSeekers = new LinkedHashMap<>();
+
+        int counter = 0;
+        Iterator<GamePlayer> itr = sortedSeekers.keySet().iterator();
+        while (itr.hasNext() && counter < total) {
+            GamePlayer gPlayer = itr.next();
+            topSeekers.put(gPlayer, sortedSeekers.get(gPlayer));
+            counter++;
+        }
+
+        return topSeekers;
+    }
+
+    public LinkedHashMap<GamePlayer, Integer> getTopHiders(int total) {
+        LinkedHashMap<GamePlayer, Integer> sortedHiders = getGamePlayers().stream().collect(Collectors.toMap(gPlayer -> gPlayer, GamePlayer::getTotalTimeAsHider)).entrySet().stream()
+                .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (a, b) -> b, LinkedHashMap::new));
+
+        LinkedHashMap<GamePlayer, Integer> topHiders = new LinkedHashMap<>();
+
+        int counter = 0;
+        Iterator<GamePlayer> itr = sortedHiders.keySet().iterator();
+        while (itr.hasNext() && counter < total) {
+            GamePlayer gPlayer = itr.next();
+            topHiders.put(gPlayer, sortedHiders.get(gPlayer));
+            counter++;
+        }
+
+        return topHiders;
+    }
+
+//    private LinkedHashMap<GamePlayer, Integer> sortHashMap(HashMap<GamePlayer, Integer> hashMap) {
+//        return hashMap.entrySet().stream()
+//                .sorted(Comparator.comparingInt(Map.Entry::getValue))
+//                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (a, b) -> b, LinkedHashMap::new));
+//    }
+//
+//    private LinkedHashMap<GamePlayer, Integer> cutHashMap(HashMap<GamePlayer, Integer> hashMap, int total) {
+//        LinkedHashMap<GamePlayer, Integer> newHashMap = new LinkedHashMap<>();
+//
+//        int counter = 0;
+//        Iterator<GamePlayer> itr = hashMap.keySet().iterator();
+//        while (itr.hasNext() && counter < total) {
+//            GamePlayer gPlayer = itr.next();
+//            newHashMap.put(gPlayer, hashMap.get(gPlayer));
+//            counter++;
+//        }
+//
+//        return newHashMap;
+//    }
 }

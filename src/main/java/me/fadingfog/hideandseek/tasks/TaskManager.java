@@ -6,21 +6,25 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 public class TaskManager extends BukkitRunnable {
     private final HideAndSeek plugin = HideAndSeek.getInstance();
-    private final Game game = Game.getInstance();
+    private final Game game;
     private PrepareCountdown prepareCountdown = null;
     private HidingCountdown hidingCountdown = null;
     private SeekingCountdown seekingCountdown = null;
+
+    public TaskManager(Game game) {
+        this.game = game;
+    }
 
     @Override
     public void run() {
         switch (game.getGameState()) {
             case Closed:
             case End:
+                cancelAllCountdowns();
                 game.resetPlayersPrefix();
                 game.returnPlayersToLobby();
-                cancel();
-                cancelAllCountdowns();
                 game.setGameState(Game.GameState.Closed);
+                cancel();
                 break;
             case Preparing:
                 if (prepareCountdown == null) {

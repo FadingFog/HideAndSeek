@@ -39,7 +39,7 @@ public class Game {
     private final Arena arena = Arena.getInstance();
 
     private GameState gameState = GameState.Closed;
-    private final TaskManager taskManager = new TaskManager();
+    private final TaskManager taskManager = new TaskManager(this);
 
     public static Game getInstance() {
         return instance;
