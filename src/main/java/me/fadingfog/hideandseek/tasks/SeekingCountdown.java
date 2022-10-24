@@ -9,6 +9,7 @@ import me.fadingfog.hideandseek.placeholder.HnsExpansion;
 import org.bukkit.ChatColor;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.text.MessageFormat;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -72,23 +73,31 @@ public class SeekingCountdown extends BukkitRunnable {
         LinkedHashMap<GamePlayer, Integer> topHiders = arena.getTopHiders(5);
 
         arena.sendArenaMessage("----------------------");
-        arena.sendArenaMessage("Топ игроков по количеству пойманных жертв:");
+        arena.sendArenaMessage(I18n.tl("topSeekers"));
         arena.sendArenaMessage("----------------------");
+        int counter = 1;
         for (Map.Entry<GamePlayer, Integer> entry : topSeekers.entrySet()) {
             GamePlayer gPlayer = entry.getKey();
             int score = entry.getValue();
-            arena.sendArenaMessage(gPlayer.getName() + " - " + score);
+            arena.sendArenaMessage(MessageFormat.format("{0}. {1} - {2}", counter, gPlayer.getName(), score));
+            counter++;
         }
 
         arena.sendArenaMessage("----------------------");
-        arena.sendArenaMessage("Топ игроков по времени жизни:");
+        arena.sendArenaMessage(I18n.tl("topHiders"));
         arena.sendArenaMessage("----------------------");
+        counter = 1;
         for (Map.Entry<GamePlayer, Integer> entry : topHiders.entrySet()) {
             GamePlayer gPlayer = entry.getKey();
             int totalTimeAsHider = entry.getValue();
 
-            arena.sendArenaMessage(gPlayer.getName() + " - " +
-                    (totalTimeAsHider > 0 ? ConfigStorage.formatDuration(totalTimeAsHider)  : I18n.tl("seeker")));
+            arena.sendArenaMessage(MessageFormat.format("{0}. {1} - {2}",
+                    counter,
+                    gPlayer.getName(),
+                    totalTimeAsHider > 0 ? ConfigStorage.formatDuration(totalTimeAsHider) : I18n.tl("seeker")
+            ));
+
+            counter++;
         }
 
         arena.sendArenaMessage("----------------------");

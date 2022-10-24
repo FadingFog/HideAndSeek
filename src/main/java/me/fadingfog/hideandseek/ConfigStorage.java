@@ -121,46 +121,61 @@ public class ConfigStorage {
     String pathGameDuration = "time-to-seek";
 
     public void setNumberOfSeekers(int count) {
+        reload();
         config.set(pathNumberOfSeekers, count);
+        save();
     }
 
     public int getNumberOfSeekers() {
+        reload();
         return config.getInt(pathNumberOfSeekers);
     }
 
     public void setMinNumberOfPlayers(int count) {
+        reload();
         config.set(pathMinNumberOfPlayers, count);
+        save();
     }
 
     public int getMinNumberOfPlayers() {
+        reload();
         return config.getInt(pathMinNumberOfPlayers);
     }
 
     public void setTimeToStart(String dur) {
+        reload();
         config.set(pathTimeToStart, dur.toUpperCase());
+        save();
     }
 
     public long getTimeToStart() {
+        reload();
         String time = (String) config.get(pathTimeToStart);
         Duration dur = Duration.parse("PT" + time.toUpperCase());
         return dur.getSeconds();
     }
 
     public void setTimeToHide(String dur) {
+        reload();
         config.set(pathTimeToHide, dur.toUpperCase());
+        save();
     }
 
     public long getTimeToHide() {
+        reload();
         String time = (String) config.get(pathTimeToHide);
         Duration dur = Duration.parse("PT" + time.toUpperCase());
         return dur.getSeconds();
     }
 
     public void setTimeToSeek(String dur) {
+        reload();
         config.set(pathGameDuration, dur.toUpperCase());
+        save();
     }
 
     public long getTimeToSeek() {
+        reload();
         String time = (String) config.get(pathGameDuration);
         Duration dur = Duration.parse("PT" + time.toUpperCase());
         return dur.getSeconds();

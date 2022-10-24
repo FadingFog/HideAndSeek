@@ -148,24 +148,4 @@ public class Arena {
 
         return topHiders;
     }
-
-//    private LinkedHashMap<GamePlayer, Integer> sortHashMap(HashMap<GamePlayer, Integer> hashMap) {
-//        return hashMap.entrySet().stream()
-//                .sorted(Comparator.comparingInt(Map.Entry::getValue))
-//                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (a, b) -> b, LinkedHashMap::new));
-//    }
-//
-//    private LinkedHashMap<GamePlayer, Integer> cutHashMap(HashMap<GamePlayer, Integer> hashMap, int total) {
-//        LinkedHashMap<GamePlayer, Integer> newHashMap = new LinkedHashMap<>();
-//
-//        int counter = 0;
-//        Iterator<GamePlayer> itr = hashMap.keySet().iterator();
-//        while (itr.hasNext() && counter < total) {
-//            GamePlayer gPlayer = itr.next();
-//            newHashMap.put(gPlayer, hashMap.get(gPlayer));
-//            counter++;
-//        }
-//
-//        return newHashMap;
-//    }
 }
