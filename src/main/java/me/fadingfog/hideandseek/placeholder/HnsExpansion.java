@@ -7,6 +7,7 @@ import me.fadingfog.hideandseek.game.Arena;
 import me.fadingfog.hideandseek.game.Game;
 import me.fadingfog.hideandseek.game.GamePlayer;
 import me.fadingfog.hideandseek.game.Lobby;
+import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 
 import static me.fadingfog.hideandseek.ConfigStorage.formatDurationDigits;
@@ -75,10 +76,10 @@ public class HnsExpansion extends PlaceholderExpansion {
                     case Closed:
                     case Preparing:
                     case End:
-                        return gameState.getName();
+                        return ChatColor.AQUA + ChatColor.BOLD.toString() + gameState.getName();
                     case Hiding:
                     case Seeking:
-                        return I18n.tl("stage", gameState.getName());
+                        return ChatColor.GOLD + I18n.tl("stage", ChatColor.AQUA + gameState.getName());
                     default:
                         return "-1";
                 }
@@ -87,9 +88,9 @@ public class HnsExpansion extends PlaceholderExpansion {
                 if (game.getGameState() != Game.GameState.Closed && game.getGameState() != Game.GameState.End) {
                     gPlayer = arena.getGamePlayer(player.getPlayer());
                     if (gPlayer != null) {
-                        return I18n.tl("role", gPlayer.getRole().getName());
+                        return ChatColor.GOLD + I18n.tl("role", gPlayer.getRole().getName());
                     } else {
-                        return I18n.tl("admin");
+                        return ChatColor.DARK_PURPLE +  I18n.tl("admin");
                     }
                 }
                 return "-1";
@@ -98,7 +99,7 @@ public class HnsExpansion extends PlaceholderExpansion {
                 if (game.getGameState() != Game.GameState.Closed && game.getGameState() != Game.GameState.End) {
                     gPlayer = arena.getGamePlayer(player.getPlayer());
                     if (gPlayer != null) {
-                        return I18n.tl("score", gPlayer.getScore());
+                        return ChatColor.GOLD + I18n.tl("score", ChatColor.WHITE.toString() + gPlayer.getScore());
                     } else {
                         return "-1";
                     }
@@ -106,25 +107,25 @@ public class HnsExpansion extends PlaceholderExpansion {
                 return "-1";
 
             case "members":
-                return I18n.tl("members", lobby.getMembers().size());
+                return ChatColor.GOLD + I18n.tl("members", ChatColor.WHITE.toString() + lobby.getMembers().size());
 
             case "hiders":
                 if (game.getGameState() != Game.GameState.Closed && game.getGameState() != Game.GameState.End) {
-                    return I18n.tl("hiders", arena.getHiders().size());
+                    return ChatColor.GOLD + I18n.tl("hiders", ChatColor.WHITE.toString() + arena.getHiders().size());
                 }
                 return "-1";
 
             case "seekers":
                 if (game.getGameState() != Game.GameState.Closed && game.getGameState() != Game.GameState.End) {
-                return I18n.tl("seekers", arena.getSeekers().size());
+                return ChatColor.GOLD + I18n.tl("seekers", ChatColor.WHITE.toString() + arena.getSeekers().size());
                 }
                 return "-1";
 
             case "timer":
                 if (game.getGameState() == Game.GameState.Preparing) {
-                    return I18n.tl("timerGameStart", timer);
+                    return ChatColor.GREEN + I18n.tl("timerGameStart", ChatColor.AQUA + ChatColor.BOLD.toString() + timer);
                 } else if (game.getGameState() == Game.GameState.Hiding || game.getGameState() == Game.GameState.Seeking) {
-                    return I18n.tl("timerLeft", formatDurationDigits(timer));
+                    return ChatColor.GREEN + I18n.tl("timerLeft", ChatColor.AQUA + ChatColor.BOLD.toString() + formatDurationDigits(timer));
                 } else {
                     return "-1";
                 }
