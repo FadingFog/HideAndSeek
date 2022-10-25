@@ -2,6 +2,7 @@ package me.fadingfog.hideandseek.game;
 
 import me.fadingfog.hideandseek.ConfigStorage;
 import me.fadingfog.hideandseek.HideAndSeek;
+import me.fadingfog.hideandseek.I18n;
 import me.fadingfog.hideandseek.tasks.TaskManager;
 import me.fadingfog.hideandseek.utils.TeleportUtil;
 import me.neznamy.tab.api.TabAPI;
@@ -15,11 +16,11 @@ import java.util.Random;
 
 public class Game {
     public enum GameState {
-        Closed("Closed"),
-        Preparing("Preparing"),
-        Hiding("Hiding"),
-        Seeking("Seeking"),
-        End("End");
+        Closed(I18n.tl("gameStageClosed")),
+        Preparing(I18n.tl("gameStagePreparing")),
+        Hiding(I18n.tl("gameStageHiding")),
+        Seeking(I18n.tl("gameStageSeeking")),
+        End(I18n.tl("gameStageEnd"));
 
         private final String name;
 
@@ -39,7 +40,7 @@ public class Game {
     private final Arena arena = Arena.getInstance();
 
     private GameState gameState = GameState.Closed;
-    private final TaskManager taskManager = new TaskManager(this);
+    private TaskManager taskManager;
 
     public static Game getInstance() {
         return instance;
@@ -66,6 +67,7 @@ public class Game {
 
         setGameState(GameState.Preparing);
 
+        taskManager = new TaskManager(this);
         taskManager.runTaskTimer(plugin, 20L, 10L);
     }
 
@@ -83,6 +85,7 @@ public class Game {
 
         if (getGameState() != Game.GameState.Closed) {
             this.stop();
+            this.taskManager.cancel();
 
             for (Player player : lobbyMembers) {
                 TeleportUtil.teleportPlayerBack(player);

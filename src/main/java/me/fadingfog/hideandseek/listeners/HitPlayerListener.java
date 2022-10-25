@@ -10,6 +10,9 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
+import java.text.MessageFormat;
+
+import static me.fadingfog.hideandseek.commands.CommandManager.MAIN_COLOR;
 import static me.fadingfog.hideandseek.commands.CommandManager.prefix;
 
 public class HitPlayerListener implements Listener {
@@ -46,7 +49,11 @@ public class HitPlayerListener implements Listener {
                             hiderLoc.subtract(nx, 0, nz);
                         }
 
-                        message = I18n.tl("seekerCaughtHider", ChatColor.RED, seeker.getName(), ChatColor.DARK_GREEN, hider.getName());
+                        message = MessageFormat.format("{0} {1} {2}",
+                                ChatColor.RED + seeker.getName(),
+                                MAIN_COLOR + I18n.tl("caught"),
+                                ChatColor.DARK_GREEN + hider.getName()
+                        );
                         seekerMessage = prefix + ChatColor.DARK_AQUA + I18n.tl("seekerCaught", hider.getDisplayName());
                         hiderMessage = prefix + ChatColor.DARK_AQUA + I18n.tl("hiderCaught", ChatColor.RED);
 

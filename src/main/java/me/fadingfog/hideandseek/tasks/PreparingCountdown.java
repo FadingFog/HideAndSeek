@@ -12,7 +12,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import static me.fadingfog.hideandseek.commands.CommandManager.SECONDARY_COLOR;
 
-public class PrepareCountdown extends BukkitRunnable {
+public class PreparingCountdown extends BukkitRunnable {
     private final ConfigStorage config = ConfigStorage.getInstance();
     private final Lobby lobby = Lobby.getInstance();
     private final Arena arena = Arena.getInstance();

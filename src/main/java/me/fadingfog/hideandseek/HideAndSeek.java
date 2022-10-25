@@ -27,10 +27,14 @@ public final class HideAndSeek extends JavaPlugin {
         instance = this;
         this.i18n = new I18n(this);
         this.i18n.onEnable();
+
+        configStorage.LOAD_DEFAULT = true;
+        configStorage.setup();
+
+        this.i18n.updateLocale(configStorage.getLocale());
+
         setupParts();
 
-        getConfig().options().copyDefaults();
-        saveDefaultConfig();
 
         if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
             new HnsExpansion(this).register();
@@ -50,8 +54,6 @@ public final class HideAndSeek extends JavaPlugin {
 
         getServer().getPluginManager().registerEvents(new PlayerQuitListener(), this);
         getServer().getPluginManager().registerEvents(new HitPlayerListener(), this);
-
-        this.i18n.updateLocale(configStorage.getLocale());
     }
 
     @Override
@@ -67,9 +69,6 @@ public final class HideAndSeek extends JavaPlugin {
     }
 
     public void setupParts() {
-        configStorage.LOAD_DEFAULT = true;
-        configStorage.setup();
-
         final Lobby lobby = new Lobby();
         lobby.setup();
 

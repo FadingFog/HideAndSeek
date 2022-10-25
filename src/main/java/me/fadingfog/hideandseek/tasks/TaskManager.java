@@ -7,7 +7,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 public class TaskManager extends BukkitRunnable {
     private final HideAndSeek plugin = HideAndSeek.getInstance();
     private final Game game;
-    private PrepareCountdown prepareCountdown = null;
+    private PreparingCountdown preparingCountdown = null;
     private HidingCountdown hidingCountdown = null;
     private SeekingCountdown seekingCountdown = null;
 
@@ -27,9 +27,9 @@ public class TaskManager extends BukkitRunnable {
                 cancel();
                 break;
             case Preparing:
-                if (prepareCountdown == null) {
-                    prepareCountdown = new PrepareCountdown();
-                    prepareCountdown.runTaskTimer(plugin, 0L, 20L);
+                if (preparingCountdown == null) {
+                    preparingCountdown = new PreparingCountdown();
+                    preparingCountdown.runTaskTimer(plugin, 0L, 20L);
                 }
                 break;
             case Hiding:
@@ -50,8 +50,8 @@ public class TaskManager extends BukkitRunnable {
         }
     }
 
-    private void cancelAllCountdowns() {
-        if (prepareCountdown != null) prepareCountdown.cancel();
+    public void cancelAllCountdowns() {
+        if (preparingCountdown != null) preparingCountdown.cancel();
         if (hidingCountdown != null) hidingCountdown.cancel();
         if (seekingCountdown != null) seekingCountdown.cancel();
     }

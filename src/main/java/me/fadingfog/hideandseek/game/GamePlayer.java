@@ -6,11 +6,11 @@ import org.bukkit.entity.Player;
 
 public class GamePlayer {
     public enum Role {
-//        HIDER("Hider", ChatColor.DARK_GREEN + "[" + I18n.tl("hider") + "] " + ChatColor.WHITE),
-//        SEEKER("Seeker", ChatColor.RED + "[" + I18n.tl("seeker") + "] " + ChatColor.WHITE);
+//        HIDER(I18n.tl("hider"), ChatColor.DARK_GREEN + "[" + I18n.tl("hider") + "] " + ChatColor.WHITE),
+//        SEEKER(I18n.tl("seeker"), ChatColor.RED + "[" + I18n.tl("seeker") + "] " + ChatColor.WHITE);
 
-        HIDER("Hider", ChatColor.DARK_GRAY + "[" + ChatColor.DARK_GREEN + I18n.tl("hider") + ChatColor.DARK_GRAY + "] " + ChatColor.WHITE),
-        SEEKER("Seeker", ChatColor.DARK_GRAY + "[" + ChatColor.RED + I18n.tl("seeker") + ChatColor.DARK_GRAY + "] " + ChatColor.WHITE);
+        HIDER(I18n.tl("hider"), ChatColor.DARK_GRAY + "[" + ChatColor.DARK_GREEN + I18n.tl("hider") + ChatColor.DARK_GRAY + "] " + ChatColor.WHITE),
+        SEEKER(I18n.tl("seeker"), ChatColor.DARK_GRAY + "[" + ChatColor.RED + I18n.tl("seeker") + ChatColor.DARK_GRAY + "] " + ChatColor.WHITE);
 
         private final String name;
         private final String prefix;

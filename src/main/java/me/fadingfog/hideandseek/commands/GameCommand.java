@@ -59,6 +59,11 @@ public class GameCommand extends SubCommand {
                     }
 
                     break;
+                case ("forcestop"):
+                    game.forceStop();
+                    resultMessage = I18n.tl("gameNotStarted");
+
+                    break;
                 case ("test"):
                     TabAPI tabAPI = TabAPI.getInstance();
                     TabPlayer tabPlayer = tabAPI.getPlayer(player.getName());
