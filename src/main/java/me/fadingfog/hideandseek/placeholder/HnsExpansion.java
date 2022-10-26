@@ -90,7 +90,7 @@ public class HnsExpansion extends PlaceholderExpansion {
                     if (gPlayer != null) {
                         return ChatColor.GOLD + I18n.tl("role", gPlayer.getRole().getName());
                     } else {
-                        return ChatColor.DARK_PURPLE +  I18n.tl("admin");
+                        return ChatColor.DARK_PURPLE + I18n.tl("admin");
                     }
                 }
                 return "-1";

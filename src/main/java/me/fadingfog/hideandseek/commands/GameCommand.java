@@ -4,10 +4,7 @@ import me.fadingfog.hideandseek.ConfigStorage;
 import me.fadingfog.hideandseek.I18n;
 import me.fadingfog.hideandseek.game.Arena;
 import me.fadingfog.hideandseek.game.Game;
-import me.fadingfog.hideandseek.game.GamePlayer;
 import me.fadingfog.hideandseek.game.Lobby;
-import me.neznamy.tab.api.TabAPI;
-import me.neznamy.tab.api.TabPlayer;
 import org.bukkit.entity.Player;
 
 
@@ -34,6 +31,10 @@ public class GameCommand extends SubCommand {
         if (args.length > 0) {
             switch (args[0].toLowerCase()) {
                 case ("start"):
+                    if (game.getGameState() != Game.GameState.Closed) {
+                        resultMessage = I18n.tl("gameAlreadyStarted");
+                        break;
+                    }
                     if (arena.getLocation() == null || arena.getSeekersLobbyLocation() == null) {
                         resultMessage = I18n.tl("arenaOrSeekersLocNotSet");
                         break;
@@ -46,8 +47,11 @@ public class GameCommand extends SubCommand {
                         resultMessage = I18n.tl("gameNotEnoughPlayers");
                         break;
                     }
-                    game.start();
-                    resultMessage = I18n.tl("gameStarted");
+                    if (game.start()) {
+                        resultMessage = I18n.tl("gameStarted");
+                    } else {
+                        resultMessage = I18n.tl("gameAlreadyStarted");
+                    }
 
                     break;
                 case ("stop"):
@@ -62,18 +66,6 @@ public class GameCommand extends SubCommand {
                 case ("forcestop"):
                     game.forceStop();
                     resultMessage = I18n.tl("gameNotStarted");
-
-                    break;
-                case ("test"):
-                    TabAPI tabAPI = TabAPI.getInstance();
-                    TabPlayer tabPlayer = tabAPI.getPlayer(player.getName());
-                    tabAPI.getTeamManager().setPrefix(tabPlayer, GamePlayer.Role.SEEKER.getPrefix());
-
-                    break;
-                case ("test2"):
-                    tabAPI = TabAPI.getInstance();
-                    tabPlayer = tabAPI.getPlayer(player.getName());
-                    tabAPI.getTeamManager().setPrefix(tabPlayer, GamePlayer.Role.HIDER.getPrefix());
 
                     break;
                 default:

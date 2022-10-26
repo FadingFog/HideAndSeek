@@ -58,7 +58,10 @@ public class Game {
         this.gameState = gameState;
     }
 
-    public void start() {
+    public boolean start() {
+        if (this.gameState != GameState.Closed) {
+            return false;
+        }
         lobby.closeLobby();
         List<Player> members = lobby.getMembers();
         preparePlayers(members);
@@ -69,6 +72,7 @@ public class Game {
 
         taskManager = new TaskManager(this);
         taskManager.runTaskTimer(plugin, 20L, 10L);
+        return true;
     }
 
     public boolean stop() {

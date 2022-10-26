@@ -4,7 +4,7 @@ api-version: 1.7.10
 main: me.fadingfog.hideandseek.HideAndSeek
 website: https://github.com/FadingFog/
 authors: [FadingFog]
-depend: [PlaceholderAPI, Essentials]
+depend: [PlaceholderAPI, Essentials, TAB, NoteBlockAPI]
 commands:
   hns:
     description: commands to control this plugin

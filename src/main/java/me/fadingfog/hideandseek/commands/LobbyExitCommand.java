@@ -6,6 +6,7 @@ import me.fadingfog.hideandseek.game.Arena;
 import me.fadingfog.hideandseek.game.Lobby;
 import me.fadingfog.hideandseek.utils.TeleportUtil;
 import org.bukkit.ChatColor;
+import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -25,13 +26,22 @@ public class LobbyExitCommand implements CommandExecutor {
             String resultMessage;
             Player player = (Player) sender;
             User user = ess.getUser(player);
+            World world = player.getWorld();
 
             if (user.isAuthorized("hns.lobby.join")) {
                 if (lobby.removeMember(player)) {
                     resultMessage = I18n.tl("lobbyLeaved");
+                    for (Player p : world.getPlayers()) {
+                        p.sendMessage(prefix + ChatColor.DARK_AQUA + I18n.tl("leftTheLobby", player.getDisplayName()));
+                    }
+
                     TeleportUtil.teleportPlayerBack(player);
                 } else if (arena.removeGamePlayer(player)) {
                     resultMessage = I18n.tl("gameLeaved");
+                    for (Player p : world.getPlayers()) {
+                        p.sendMessage(prefix + ChatColor.DARK_AQUA + I18n.tl("leftTheLobby", player.getDisplayName()));
+                    }
+
                     TeleportUtil.teleportPlayerBack(player);
                 } else {
                     resultMessage = I18n.tl("notInGame");

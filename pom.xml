@@ -53,6 +53,10 @@
     </build>
 
     <repositories>
+        <repository> <!-- NoteBlockAPI -->
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+        </repository>
         <repository>
             <id>spigotmc-repo</id>
             <url>https://repo.bg-software.com/repository/nms/</url>
@@ -120,6 +124,11 @@
             <artifactId>icu4j</artifactId>
             <version>72.1</version>
         </dependency>
-
+        <dependency>
+            <groupId>com.github.koca2000</groupId>
+            <artifactId>NoteBlockAPI</artifactId>
+            <version>-0eace096b6-1</version>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
 </project>

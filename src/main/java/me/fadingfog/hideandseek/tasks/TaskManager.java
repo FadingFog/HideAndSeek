@@ -2,10 +2,13 @@ package me.fadingfog.hideandseek.tasks;
 
 import me.fadingfog.hideandseek.HideAndSeek;
 import me.fadingfog.hideandseek.game.Game;
+import me.fadingfog.hideandseek.game.Lobby;
+import org.bukkit.Sound;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class TaskManager extends BukkitRunnable {
     private final HideAndSeek plugin = HideAndSeek.getInstance();
+    private final Lobby lobby = Lobby.getInstance();
     private final Game game;
     private PreparingCountdown preparingCountdown = null;
     private HidingCountdown hidingCountdown = null;
@@ -23,6 +26,7 @@ public class TaskManager extends BukkitRunnable {
                 cancelAllCountdowns();
                 game.resetPlayersPrefix();
                 game.returnPlayersToLobby();
+                lobby.getLocation().getWorld().playSound(lobby.getLocation(), Sound.LEVEL_UP, 2, 1);
                 game.setGameState(Game.GameState.Closed);
                 cancel();
                 break;
