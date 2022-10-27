@@ -38,6 +38,17 @@ public class HidingCountdown extends BukkitRunnable {
             cancel();
         }
 
+        if (arena.getHiders().size() == 0) {
+            arena.sendArenaMessage(I18n.tl("gameOverNoHiders"));
+            game.setGameState(Game.GameState.End);
+            cancel();
+        } else if (arena.getSeekers().size() == 0) {
+            arena.sendArenaMessage(I18n.tl("gameOverNoSeekers"));
+            game.setGameState(Game.GameState.End);
+            cancel();
+        }
+
+
         hnsExpansion.timer = timer;
         timer--;
     }

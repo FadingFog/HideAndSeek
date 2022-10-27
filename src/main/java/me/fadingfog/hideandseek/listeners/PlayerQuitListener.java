@@ -25,13 +25,13 @@ public class PlayerQuitListener implements Listener {
         if (world == lobby.getLocation().getWorld() || world == arena.getLocation().getWorld()) {
             if (lobby.removeMember(player)) {
                 for (Player p : world.getPlayers()) {
-                    p.sendMessage(prefix + ChatColor.DARK_AQUA + I18n.tl("leftTheLobby", player.getDisplayName()));
+                    p.sendMessage(prefix + ChatColor.DARK_AQUA + I18n.tl("leftTheLobby", player.getName()));
                 }
                 TeleportUtil.teleportPlayerBack(player);
             }
             if (arena.removeGamePlayer(player)) {
                 for (Player p : world.getPlayers()) {
-                    p.sendMessage(prefix + ChatColor.DARK_AQUA + I18n.tl("leftTheGame", player.getDisplayName()));
+                    p.sendMessage(prefix + ChatColor.DARK_AQUA + I18n.tl("leftTheGame", player.getName()));
                 }
                 TeleportUtil.teleportPlayerBack(player);
             }

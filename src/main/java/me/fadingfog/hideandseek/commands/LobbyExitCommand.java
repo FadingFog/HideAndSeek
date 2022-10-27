@@ -32,14 +32,14 @@ public class LobbyExitCommand implements CommandExecutor {
                 if (lobby.removeMember(player)) {
                     resultMessage = I18n.tl("lobbyLeaved");
                     for (Player p : world.getPlayers()) {
-                        p.sendMessage(prefix + ChatColor.DARK_AQUA + I18n.tl("leftTheLobby", player.getDisplayName()));
+                        p.sendMessage(prefix + ChatColor.DARK_AQUA + I18n.tl("leftTheLobby", player.getName()));
                     }
 
                     TeleportUtil.teleportPlayerBack(player);
                 } else if (arena.removeGamePlayer(player)) {
                     resultMessage = I18n.tl("gameLeaved");
                     for (Player p : world.getPlayers()) {
-                        p.sendMessage(prefix + ChatColor.DARK_AQUA + I18n.tl("leftTheLobby", player.getDisplayName()));
+                        p.sendMessage(prefix + ChatColor.DARK_AQUA + I18n.tl("leftTheLobby", player.getName()));
                     }
 
                     TeleportUtil.teleportPlayerBack(player);
